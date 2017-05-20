@@ -1,0 +1,628 @@
+<?php  \php\App::renderTemplate("admin-header")?>
+<div data-id="" class="bg-layer"></div>
+<div class="row affix-row">
+    <div class="col-sm-3 col-md-2 affix-sidebar">
+    	<div class="sidebar-nav">
+            <div class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <span class="visible-xs navbar-brand">Admin</span>
+                </div>
+                <div class="navbar-collapse collapse sidebar-navbar-collapse">
+                    <ul class="nav navbar-nav" id="sidenav01">
+                        <li class="activee">
+                            <a href="http://localhost/shop/admin" data-toggle="collapse" data-target="#toggleDemo0" data-parent="#sidenav01" class="collapsed">
+                            <h4>
+                            Admin
+                            </h4>
+                            </a>
+                        </li>
+                        <li class="statistic"><a href=""><span class="glyphicon glyphicon-stats fa-icon"></span>Статистика</a></li>
+                        <li class="product"><a href=""><span class="glyphicon glyphicon-lock fa-icon"></span>Работа с товарами</a></li>
+                        <li class="category"><a href=""><i class="fa fa-tags fa-icon" aria-hidden="true"></i>Работа с категориями</a></li>
+                        <li class="user"><a href=""><span class="glyphicon glyphicon-user fa-icon"></span>Удалить пользователя</a></li>
+                        <li class="comment"><a href=""><span class="glyphicon glyphicon-comment fa-icon"></span> Удалить комметарий</a></li>
+                        <li class=""><a href="http://localhost/shop/"><span class="glyphicon glyphicon-eye-open fa-icon"></span>Посмотреть сайт</a></li>
+                        <li class=""><a href="http://localhost/shop/adminLogout"><span class="glyphicon glyphicon-log-out fa-icon"></span>Выйти</a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+	</div>
+
+    <div class="wrapper" id="admin-wrapp">
+        <div class="col-md-4 widget">
+            <div class="material-button-anim">
+                <ul class="list-inline" id="options">
+                    <li class="option scale-on">
+                        <button class="material-button option1" type="button">
+                            <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+                        </button>
+                    </li>
+                    <li class="option scale-on">
+                        <button class="material-button option2" data-toggle="modal" data-target="#myModal" type="button">
+                            <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                        </button>
+                    </li>
+                    <li class="option scale-on">
+                        <button class="material-button option3" type="button">
+                            <span class="fa fa-tags" aria-hidden="true"></span>
+                        </button>
+                    </li>
+                    <li class="option scale-on">
+                        <button class="material-button option4" type="button">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </button>
+                    </li>
+                    <li class="option scale-on">
+                        <button class="material-button option5" type="button">
+                            <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                        </button>
+                    </li>
+                </ul>
+                <button class="material-button material-button-toggle open" type="button">
+                    <span class="fa fa-plus" aria-hidden="true"></span>
+                </button>
+            </div>
+            
+
+        </div>
+        <div class="col-lg-4 product-widget">
+            <div class="material-button-product">
+                <ul class="list-inline" id="options">
+                    <li class="option scale-on">
+                        <button class="material-button option1" type="button">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                    </li>
+                    <li class="option scale-on">
+                        <button class="material-button option2" type="button">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </button>
+                    </li>
+                    <li class="option scale-on">
+                        <button class="material-button option3" type="button">
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+                        </button>
+                    </li>
+                </ul>
+                <button class="material-button material-button-toggle open" type="button">
+                    <span class="fa fa-plus" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Добавление товара</h4>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <form  action="http://localhost/shop/addProduct" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label>Наименования</label>
+                                <input  name="name" type="text" class="price form-control" placeholder="Введите название">
+                            </div>
+                            <div class="form-group">
+                                <label>Категория</label>
+                                <select name="categoty" class="form-control">
+                                    <?php foreach ($underCat as $key => $value) { ?>
+                                        <option><?php echo $value["name"]; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Цена</label>
+                                <input  name="price" type="text" class="price form-control" placeholder="Введите цену">
+                            </div>
+                            <div class="form-group">
+                                <label>Бренд</label>
+                                <input  name="brand" type="text" class="brand form-control" placeholder="Введите бренд">
+                            </div>
+                            <div class="form-group">
+                                <label>Артикул</label>
+                                <input  name="article" type="text" class="article form-control" placeholder="Введите артикул">
+                            </div>
+                            <div class="form-group">
+                                <label>Габариты</label>
+                                <input  name="deminsion" type="text" class="deminsion form-control" placeholder="Введите габариты">
+                            </div>
+                            <div class="form-group">
+                                <label>Марка автомобиля</label>
+                                <input  name="mark" type="text" class="mark form-control" placeholder="Введите марку автомобиля">
+                            </div>
+                            <div class="form-group quantity">
+                                <label>Количество</label>
+                                <div class="input-group spinner">
+                                    <input name="quatity" type="text" class="quatity form-control">
+                                    <div class="input-group-btn-vertical">
+                                        <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
+                                        <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="product" checked value="Обычный товар">
+                                        Обычный товар
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="product" value="Газета">
+                                        Газета
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="product" value="Акция">
+                                        Акция 
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="product" value="Новинка">
+                                        Новинка 
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="product" value="Хит продаж ">
+                                        Хит продаж 
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Описание</label>
+                                <textarea name="desciption" class="form-control" rows="6"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Добавьте фотографию</label>
+                                <input type="file" name="photo" id="exampleInputFile">
+                                <p class="help-block">Эта фотография будет прикреплена к товару</p>
+                            </div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                            <button type="submit" class="btn btn-primary addUnderCategory">Добавить</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                    
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <div class="col-sm-9 affix-content" id="statistic">
+            <div class="container">
+                
+                <div class="page-header">
+                    <h3><span class="glyphicon glyphicon-stats"></span> Статистика</h3>
+                </div>
+            
+
+                <div class="container-2">
+                    <div id="page-wrapper">   
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="page-title">
+                                    <ol class="breadcrumb">
+                                        <li class="active"><i class="fa fa-tachometer" aria-hidden="true"></i>Информационная панель</li>
+                                        <li class="pull-right">
+                                        </li>
+                                    </ol>
+                                    <h2>Статистика<small> по количеству</small></h2>
+                                </div>
+                            </div>
+                        </div> 
+                                                 
+                        <div class="row" >
+                            <div class="col-lg-3 col-sm-6">
+                                <div class="circle-tile">
+                                    <a href="#">
+                                        <div class="circle-tile-heading dark-blue">
+                                            <i class="fa fa-users fa-fw fa-3x"></i>
+                                        </div>
+                                    </a>
+                                    <div class="circle-tile-content dark-blue">
+                                        <div class="circle-tile-description text-faded">
+                                            Пользователи
+                                        </div>
+                                        <div class="circle-tile-number text-faded">
+                                            <span id="sparklineA">Неа</span>
+                                        </div>
+                                        <a href="#" class="circle-tile-footer">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-6">
+                                <div class="circle-tile">
+                                    <a href="#">
+                                        <div class="circle-tile-heading green">
+                                            <i class="fa fa-newspaper-o fa-3x" aria-hidden="true"></i>
+                                        </div>
+                                    </a>
+                                    <div class="circle-tile-content green">
+                                        <div class="circle-tile-description text-faded">
+                                            Газета
+                                        </div>
+                                        <div class="circle-tile-number text-faded">
+                                            <?php foreach ($countPrd as $key => $value) { ?>
+                                                <?php if ($value["approve"] === "Газета"){ ?>
+                                                    <span id="sparklineA"><?php echo $value["COUNT(approve)"]; ?></span>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </div>
+                                        <a href="#" class="circle-tile-footer">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-6">
+                                <div class="circle-tile">
+                                    <a href="#">
+                                        <div class="circle-tile-heading blue">
+                                            <i class="fa fa-share-alt-square fa-3x" aria-hidden="true"></i>
+                                        </div>
+                                    </a>
+                                    <div class="circle-tile-content blue">
+                                        <div class="circle-tile-description text-faded">
+                                            Акция
+                                        </div>
+                                        <div class="circle-tile-number text-faded">
+                                            <?php foreach ($countPrd as $key => $value) { ?>
+                                                <?php if ($value["approve"] === "Акция"): ?>
+                                                    <span id="sparklineA"><?php echo $value["COUNT(approve)"]; ?></span>
+                                                <?php endif ?>
+                                            <?php } ?>
+                                        </div>
+                                        <a href="#" class="circle-tile-footer">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-6">
+                                <div class="circle-tile">
+                                    <a href="#">
+                                        <div class="circle-tile-heading gray">
+                                            <i class="fa fa-times fa-3x" aria-hidden="true"></i>
+                                        </div>
+                                    </a>
+                                    <div class="circle-tile-content gray">
+                                        <div class="circle-tile-description text-faded">
+                                            Удаленные
+                                        </div>
+                                        <div class="circle-tile-number text-faded">
+                                        <span id="sparklineA"> Неа </span>
+                                            <?php foreach ($countPrd as $key => $value) { ?>
+                                                <?php if ($value["approve"] === "Удаленные"): ?>
+                                                    <span id="sparklineA"> 1 <?php echo $value["COUNT(approve)"]; ?></span>
+                                                <?php endif ?>
+                                            <?php } ?>
+                                            <span id="sparklineB"></span>
+                                        </div>
+                                        <a href="#" class="circle-tile-footer">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-6">
+                                <div class="circle-tile">
+                                    <a href="#">
+                                        <div class="circle-tile-heading purple">
+                                            <i class="fa fa-first-order fa-3x" aria-hidden="true"></i>
+                                        </div>
+                                    </a>
+                                    <div class="circle-tile-content purple">
+                                        <div class="circle-tile-description text-faded">
+                                            Новинки
+                                        </div>
+                                        <div class="circle-tile-number text-faded">
+                                            <?php foreach ($countPrd as $key => $value) { ?>
+                                                <?php if ($value["approve"] === "Новинка"): ?>
+                                                    <span id="sparklineA"><?php echo $value["COUNT(approve)"]; ?></span>
+                                                <?php endif ?>
+                                            <?php } ?>
+                                            <span id="sparklineA"></span>
+                                        </div>
+                                        <a href="#" class="circle-tile-footer">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-6">
+                                <div class="circle-tile">
+                                    <a href="#">
+                                        <div class="circle-tile-heading red">
+                                            <i class="fa fa-fire fa-3x" aria-hidden="true"></i>
+                                        </div>
+                                    </a>
+                                    <div class="circle-tile-content red">
+                                        <div class="circle-tile-description text-faded">
+                                            Хиты продаж
+                                        </div>
+                                        <div class="circle-tile-number text-faded">
+                                            <?php foreach ($countPrd as $key => $value) { ?>
+                                                <?php if ($value["approve"] === "Хит продаж "): ?>
+                                                    <span id="sparklineA"><?php echo $value["COUNT(approve)"]; ?></span>
+                                                <?php endif ?>
+                                            <?php } ?>
+                                        </div>
+                                        <a href="#" class="circle-tile-footer">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-6">
+                                <div class="circle-tile">
+                                    <a href="#">
+                                        <div class="circle-tile-heading orange">
+                                            <i class="fa fa-comment fa-3x" aria-hidden="true"></i>
+                                        </div>
+                                    </a>
+                                    <div class="circle-tile-content orange">
+                                        <div class="circle-tile-description text-faded">
+                                            Отзывы
+                                        </div>
+                                        <div class="circle-tile-number text-faded">
+                                            <span id="sparklineB">Неа</span>
+                                        </div>
+                                        <a href="#" class="circle-tile-footer">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-6">
+                                <div class="circle-tile">
+                                    <a href="#">
+                                        <div class="circle-tile-heading rebubccapurple">
+                                            <i class="fa fa-tasks fa-fw fa-3x"></i>
+                                        </div>
+                                    </a>
+                                    <div class="circle-tile-content rebubccapurple">
+                                        <div class="circle-tile-description text-faded">
+                                            Обычные
+                                        </div>
+                                        <div class="circle-tile-number text-faded">
+                                            <?php foreach ($countPrd as $key => $value) { ?>
+                                                <?php if ($value["approve"] === "Обычный товар"): ?>
+                                                    <span id="sparklineA"><?php echo $value["COUNT(approve)"]; ?></span>
+                                                <?php endif ?>
+                                            <?php } ?>
+                                            
+                                        </div>
+                                        <a href="#" class="circle-tile-footer">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- page-wrapper END-->
+                </div><!-- container-1 END-->
+            </div>
+        </div>
+        <div class="col-sm-9 affix-content" id="product">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="page-header">
+                            <h3><span class="glyphicon glyphicon-lock"></span>Работа с товарами</h3>
+                        </div>
+                    
+                        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                            Добавить товар
+                        </button>
+                    </div>
+
+                    <div class="col-lg-12 header-obj">
+                        <h3>Обычные товары</h3>
+                        <?php foreach ($prdCat as $key => $value) {?>
+                            <?php if ($value["approve"] === "Обычный товар") { ?>
+                                <div class="col-lg-3">
+                                    <a href="#">
+                                        <div class="product" data-id="<?php echo $value['id']; ?>">
+                                            <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
+                                            <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
+                                                <div class="img-wrap">
+                                                    <img class="img-responsive" src="<?php echo $value['photo']; ?>">
+                                                </div>
+                                            <p class="price">Цена: <span><?php echo $value["price"]; ?></span></p>
+                                            <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
+                                            <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
+                                            <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
+                                            <p class="hover-list">Под кат: <span><?php echo $value["name_under"]; ?></span></p>
+                                        </div>
+                                    </a>
+                                </div>
+                            <?php } ?>
+                        <?php } ?>
+                    </div>
+                    <div class="col-lg-12 header-newspaper">
+                        <h3>Товары из газеты</h3>
+                        <?php foreach ($prdCat as $key => $value) {?>
+                            <?php if ($value["approve"] === "Газета") { ?>
+                                <div class="col-lg-3" >
+                                    <a href="#">
+                                        <div class="product" data-id="<?php echo $value['id']; ?>">
+                                            <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
+                                            <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
+                                                <div class="img-wrap">
+                                                    <img class="img-responsive" src="<?php echo $value['photo']; ?>">
+                                                </div>
+                                            <p class="price">Цена: <span><?php echo $value["price"]; ?></span></p>
+                                            <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
+                                            <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
+                                            <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
+                                            <p class="hover-list">Под кат: <span><?php echo $value["name_under"]; ?></span></p>
+                                        </div>
+                                    </a>
+                                </div>
+                            <?php } ?>
+                        <?php } ?>
+                    </div>
+                    <div class="col-lg-12 header-stock">
+                        <h3>Товары с акцией</h3>
+                        <?php foreach ($prdCat as $key => $value) {?>
+                            <?php if ($value["approve"] === "Акция") { ?>
+                                <div class="col-lg-3">
+                                    <a href="#">
+                                        <div class="product" data-id="<?php echo $value['id']; ?>">
+                                            <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
+                                            <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
+                                                <div class="img-wrap">
+                                                    <img class="img-responsive" src="<?php echo $value['photo']; ?>">
+                                                </div>
+                                            <p class="price">Цена: <span><?php echo $value["price"]; ?></span></p>
+                                            <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
+                                            <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
+                                            <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
+                                            <p class="hover-list">Под кат: <span><?php echo $value["name_under"]; ?></span></p>
+                                        </div>
+                                    </a>
+                                </div>
+                            <?php } ?>
+                        <?php } ?>
+                    </div>
+                    <div class="col-lg-12 header-deleted">
+                        <h3>Удаленные товары</h3>
+                        <?php foreach ($prdCat as $key => $value) {?>
+                            <?php if ($value["approve"] === "Удален") { ?>
+                                <div class="col-lg-3">
+                                    <a href="#">
+                                        <div class="product" data-id="<?php echo $value['id']; ?>">
+                                            <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
+                                            <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
+                                                <div class="img-wrap">
+                                                    <img class="img-responsive" src="<?php echo $value['photo']; ?>">
+                                                </div>
+                                            <p class="price">Цена: <span><?php echo $value["price"]; ?></span></p>
+                                            <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
+                                            <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
+                                            <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
+                                            <p class="hover-list">Под кат: <span><?php echo $value["name_under"]; ?></span></p>
+                                        </div>
+                                    </a>
+                                </div>
+                            <?php } ?>
+                        <?php } ?>
+                    </div>
+                    <div class="col-lg-12 header-news">
+                        <h3>Новинки</h3>
+                        <?php foreach ($prdCat as $key => $value) {?>
+                            <?php if ($value["approve"] === "Новинка") { ?>
+                                <div class="col-lg-3">
+                                    <a href="#">
+                                        <div class="product" data-id="<?php echo $value['id']; ?>">
+                                            <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
+                                            <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
+                                                <div class="img-wrap">
+                                                    <img class="img-responsive" src="<?php echo $value['photo']; ?>">
+                                                </div>
+                                            <p class="price">Цена: <span><?php echo $value["price"]; ?></span></p>
+                                            <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
+                                            <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
+                                            <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
+                                            <p class="hover-list">Под кат: <span><?php echo $value["name_under"]; ?></span></p>
+                                        </div>
+                                    </a>
+                                </div>
+                            <?php } ?>
+                        <?php } ?>
+                    </div>
+                    <div class="col-lg-12 header-bestseller">
+                        <h3>Хиты продаж</h3>
+                        <?php foreach ($prdCat as $key => $value) {?>
+                            <?php if ($value["approve"] === "Хит продаж ") { ?>
+                                <div class="col-lg-3">
+                                    <a href="#">
+                                        <div class="product" data-id="<?php echo $value['id']; ?>">
+                                            <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
+                                            <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
+                                                <div class="img-wrap">
+                                                    <img class="img-responsive" src="<?php echo $value['photo']; ?>">
+                                                </div>
+                                            <p class="price">Цена: <span><?php echo $value["price"]; ?></span></p>
+                                            <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
+                                            <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
+                                            <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
+                                            <p class="hover-list">Под кат: <span><?php echo $value["name_under"]; ?></span></p>
+                                        </div>
+                                    </a>
+                                </div>
+                            <?php } ?>
+                        <?php } ?>
+                    </div>              
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9 affix-content" id="category">
+            <div class="container">
+                <div class="row">
+                    <div class="page-header">
+                    <h3><i class="fa fa-tags fa-icon" aria-hidden="true"></i>Работа с категориями</h3>
+                </div>
+                <div class="add-cat">
+                        <div class="title">
+                            <h2>Добавить категорию</h2>
+                        </div>
+                        <div class="input-group">
+                          <input type="text" class="form-control" placeholder="Название категории">
+                          <span class="input-group-btn">
+                              <a href="">
+                                <button class="btn btn-secondary" type="button">Добавить<i class="fa fa-plus" aria-hidden="true"></i></button>
+                              </a>
+                          </span>
+                        </div>
+                        <div class="alert alert-success">
+                          <strong>Ура! </strong> Категория успешно добавлена
+                        </div>
+
+                           <div class="alert alert-danger">
+                          <strong>Ошибка! </strong> Заполните название категории
+                        </div>
+                </div>  
+                    <?php foreach ($defTag as $key => $val) {?>
+                        <div class="col-md-4 categor">
+                            <ul id="tree3"> 
+                                <li class="tree" ><a href="#"><?php echo $val["name"]; ?></a><i data-id="<?php echo $val["id"]; ?>" class="fa fa-plus-circle add-under-cat" aria-hidden="true"></i><i data-id="<?php echo $val["id"]; ?>" class="fa fa-minus-circle del-def" aria-hidden="true"></i>
+                                    <ul>
+                                        <?php foreach ($underCat as $key => $value) { ?>
+                                            <?php if ($val["id"] === $value["def_category_id"]) { ?>
+                                                <li><?php echo $value["name"]; ?> <i data-id="<?php echo $value["id"]; ?>" class="fa fa-minus-circle del-under" data-id="<?php echo $value["id"]; ?>" aria-hidden="true"></i></li>
+                                            <?php } ?>
+                                        <?php } ?>
+                                        
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    <?php } ?>
+                </div>    
+            </div>      
+        </div>
+        <div class="col-sm-9 affix-content" id="user">
+            <div class="container">
+                <div class="row">
+                    <div class="page-header">
+                        <h3><span class="glyphicon glyphicon-user fa-icon"></span>Удалить пользователя</h3>
+                    </div>
+                    user  
+                </div>      
+            </div>
+        </div>
+        <div class="col-sm-9 affix-content" id="comment">
+            <div class="container">
+                <div class="row">
+                        <div class="page-header">
+                        <h3><span class="glyphicon glyphicon-comment fa-icon"></span>Удалить комментарий</h3>
+                    </div>
+                    comment 
+                </div>       
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<?php  \php\App::renderTemplate("admin-footer")?>
