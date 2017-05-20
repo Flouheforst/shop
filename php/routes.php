@@ -1,7 +1,7 @@
 <?php 
 	
 	$router->get("/", function(){
-		echo "qwe";
+		
 	});
 
 	$router->get("/signAdmin", function(){
@@ -85,8 +85,10 @@
 
 	$router->post("/registration", "User:registration");
 
+	$router->post("/signIn", "User:signIn");
+	
 	$router->get("/signUser", function (){
-		echo "signUser";
+		\php\App::renderPages("signIn");
 	});
 
 	$router->get("/providerSign", function(){

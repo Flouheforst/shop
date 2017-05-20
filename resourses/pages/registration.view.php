@@ -10,7 +10,7 @@
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-									<input type="email" class="form-control" name="email" placeholder="Введите ваш логин"/>
+									<input type="email" class="form-control" name="email" placeholder="Введите ваш email"/>
 								</div>
 							</div>
 						</div>
@@ -28,7 +28,7 @@
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="fullname"  placeholder="Введите ваш логин"/>
+									<input type="text" class="form-control" name="fullname"  placeholder="Введите Ф.И.О"/>
 								</div>
 							</div>
 						</div>
