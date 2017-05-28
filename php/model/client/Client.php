@@ -20,7 +20,7 @@
 			if ($res) {
 				$result = $this->db->getAll("SELECT email, full_name, idclient FROM $this->tableName where email = ?s", $email);
 				$_SESSION["auth"] = true;
-				$_SESSION["data-user"] = $result;
+				$_SESSION["dataUser"] = $result;
 			} 
 			return $res;
 		}
@@ -31,6 +31,8 @@
 
 			foreach ($res as $key => $value) {
 				if ( password_verify($password, $value["password"]) && $email == $value["email"]) {
+					$result = $this->db->getAll("SELECT email, full_name, idclient FROM $this->tableName where email = ?s", $email);
+					$_SESSION["dataUser"] = $result;
 					$_SESSION["auth"] = true;
 				} else {
 					$_SESSION["auth"] = false;

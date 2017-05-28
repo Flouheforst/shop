@@ -2,6 +2,31 @@
 	
 	$router->get("/", function(){
 		
+
+		$defCat = new \php\model\category\DefCategory();
+		$defUnderCat = new \php\model\category\UnderCat();
+
+
+		$product = new \php\model\product\Product();
+		$productCategory = new \php\model\join\ProductCategory();
+
+
+
+		$prdCat = $productCategory->getPrdCat();
+		$resCat = $defCat->getAll();
+		$resUnder = $defUnderCat->getAll();
+		$hitPrd = $product->getOnApprove("Хит продаж ");
+		$stock = $product->getOnApprove("Акция");
+
+
+		\php\App::renderPages("main", [
+				"prdCat" => $prdCat,
+				"resCat" => $resCat,
+				"resUnder" => $resUnder,
+				"hitPrd" => $hitPrd,
+				"stock" => $stock
+			]);
+
 	});
 
 	$router->get("/signAdmin", function(){
@@ -56,6 +81,8 @@
 
 			$defCat = new \php\model\category\DefCategory();
 			$defCat->addCat($cat);
+
+
 		} else {
 			\php\App::redirect("shop/signAdmin");
 		}
@@ -74,9 +101,14 @@
 		} 
 	});
 
-	$router->get("/adminLogout", function(){
+	$router->post("/adminLogout", function(){
 		unset($_SESSION["admin-auth"]);
 		\php\App::redirect("shop/signAdmin");
+	});
+
+	$router->post("/loguotUser", function(){
+		unset($_SESSION["auth"]);
+		\php\App::redirect("shop/");
 	});
 
 	$router->get("/regUser", function (){
@@ -86,7 +118,7 @@
 	$router->post("/registration", "User:registration");
 
 	$router->post("/signIn", "User:signIn");
-	
+
 	$router->get("/signUser", function (){
 		\php\App::renderPages("signIn");
 	});

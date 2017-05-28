@@ -9,7 +9,7 @@
 							<label for="name" class="cols-sm-2 control-label">Email</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
 									<input type="email" class="form-control" name="email" placeholder="Введите ваш email"/>
 								</div>
 							</div>
@@ -33,6 +33,7 @@
 						<div class="form-group ">
 								<button type="submit" id="button" class="btn btn-primary btn-lg btn-block login-button">Вход</button>
 						</div>
+						<p class="registr"><a href="http://localhost/shop/regUser">Регистрация</a></p>
 					</form>
 				</div>
 			</div>
