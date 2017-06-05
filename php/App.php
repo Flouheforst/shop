@@ -8,6 +8,8 @@
 	ini_set('display_errors', 1);
 
 	require "vendor/safemysql.class.php";
+	require "vendor/PHPExcel-1.8/Classes/PHPExcel.php";
+	require "vendor/PHPExcel-1.8/Classes/PHPExcel/Writer/Excel2007.php";
 	require "Loader.php";
 	
 	$load = new Loader();
@@ -41,6 +43,8 @@
 	}
 
 	$app = new App();
+
+	$xls = new \PHPExcel();
 
 	$router = new rout\Router();
 

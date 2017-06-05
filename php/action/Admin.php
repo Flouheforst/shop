@@ -55,4 +55,58 @@
 				// вы не пошли
 			}
 		}
+
+		public function delDef(){
+			$id = $_POST["defCat"];
+			
+			$cat = new \php\model\category\DefCategory();
+			$nameCat = $cat->getName($id);
+			$cat->delUnderOnDef($id);
+
+			$undr = new \php\model\category\UnderCat();
+			$underRes = $undr->delUnderOnDef($id);
+
+			if ($catRes === "success" && $underRes === "success") {
+				
+				$category = new \php\model\category\Category();
+				$resCat = $category->getOnApprove($nameCat);
+
+				$prdHasCat = new \php\model\has\ProductHasCategory();
+				$prdCat = $prdHasCat->onCat($resCat);
+				
+				$product = new \php\model\product\Product();
+				$product->changeApprove($prdCat, "Удален");
+			}
+
+			
+		}
+
+		public function delUnder(){
+			$id = $_POST["defUnder"];
+
+			$undr = new \php\model\category\UnderCat();
+			$nameUnder = $undr->getName($id);
+			$underRes = $undr->delUnder($id);
+
+			$category = new \php\model\category\Category();
+			$resCat = $category->getOnAprUnder($nameUnder);
+
+			$prdHasCat = new \php\model\has\ProductHasCategory();
+			$prdCat = $prdHasCat->onCatUnder($resCat);
+
+			$product = new \php\model\product\Product();
+			$product->changeApprove($prdCat, "Удален");
+		
+			if ($underRes) {
+				echo "success";
+			}
+		}
+
+		public function delPrd(){
+			$id = $_POST["id"];
+
+			$product = new \php\model\product\Product();
+			$product->deleteOnId($id, "Удален");
+			echo "success";
+		}
 	} 

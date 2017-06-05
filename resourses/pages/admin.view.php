@@ -28,6 +28,7 @@
                         <li class="category"><a href=""><i class="fa fa-tags fa-icon" aria-hidden="true"></i>Работа с категориями</a></li>
                         <li class="user"><a href=""><span class="glyphicon glyphicon-user fa-icon"></span>Удалить пользователя</a></li>
                         <li class="comment"><a href=""><span class="glyphicon glyphicon-comment fa-icon"></span> Удалить комметарий</a></li>
+                        <li class="feedback"><a href=""><i class="fa fa-commenting" aria-hidden="true"></i> Обратная связь</a></li>
                         <li class=""><a href="http://localhost/shop/"><span class="glyphicon glyphicon-eye-open fa-icon"></span>Посмотреть сайт</a></li>
                         <li class=""><a href="http://localhost/shop/adminLogout"><span class="glyphicon glyphicon-log-out fa-icon"></span>Выйти</a></li>
                     </ul>
@@ -199,7 +200,46 @@
                     </div>
                 </div>
             </div>
-        </div>  
+        </div> 
+        <div class="col-sm-9 affix-content" id="feedback">
+            <div class="container">
+                <div class="page-header">
+                    <h3><i class="fa fa-commenting" aria-hidden="true"></i>Обратная связь</h3>
+                </div>
+                 <div class="well">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>#id</th>
+                              <th>email</th>
+                              <th>Дата</th>
+                              <th>Текст</th>
+                              <th style="width: 36px;"></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php foreach ($feedback as $key => $value) { ?>
+                                <tr>
+                                  <td><?php echo $value["id"]; ?></td>
+                                  <td><?php echo $value["author"]; ?></td>
+                                  <td><?php echo $value["date"]; ?></td>
+                                  <td><?php echo $value["text"]; ?></td>
+                                  <td>
+                                      <a href="user.html"><i class="icon-pencil"></i></a>
+                                      <a href="#myModal" role="button" data-toggle="modal"><i class="icon-remove"></i></a>
+                                  </td>
+                                </tr>
+                            <?php  } ?>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div class="btn-toolbar">
+                        <form action="http://localhost/shop/excelFeedback" method="post" class="form-feedback">
+                            <button class="btn btn-primary exel-report">Отчет в Excel</button>
+                        </form>
+                    </div>
+            </div>  
+        </div> 
         <div class="col-sm-9 affix-content" id="statistic">
             <div class="container">
                 
@@ -223,7 +263,7 @@
                             </div>
                         </div> 
                                                  
-                        <div class="row" >
+                        <div class="row item-stat">
                             <div class="col-lg-3 col-sm-6">
                                 <div class="circle-tile">
                                     <a href="#">
@@ -236,9 +276,9 @@
                                             Пользователи
                                         </div>
                                         <div class="circle-tile-number text-faded">
-                                            <span id="sparklineA">Неа</span>
+                                            <span id="sparklineA"><?php echo $countClient[0]["count(*)"]; ?></span>
                                         </div>
-                                        <a href="#" class="circle-tile-footer">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
+                                        <a  class="circle-tile-footer getUser">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -260,7 +300,7 @@
                                                 <?php } ?>
                                             <?php } ?>
                                         </div>
-                                        <a href="#" class="circle-tile-footer">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
+                                        <a data-product="Газета" class="circle-tile-footer product">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -282,7 +322,7 @@
                                                 <?php endif ?>
                                             <?php } ?>
                                         </div>
-                                        <a href="#" class="circle-tile-footer">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
+                                        <a data-product="Акция" class="circle-tile-footer product">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -298,15 +338,14 @@
                                             Удаленные
                                         </div>
                                         <div class="circle-tile-number text-faded">
-                                        <span id="sparklineA"> Неа </span>
                                             <?php foreach ($countPrd as $key => $value) { ?>
-                                                <?php if ($value["approve"] === "Удаленные"): ?>
-                                                    <span id="sparklineA"> 1 <?php echo $value["COUNT(approve)"]; ?></span>
+                                                <?php if ($value["approve"] === "Удален"): ?>
+                                                    <span id="sparklineA"><?php echo $value["COUNT(approve)"]; ?></span>
                                                 <?php endif ?>
                                             <?php } ?>
                                             <span id="sparklineB"></span>
                                         </div>
-                                        <a href="#" class="circle-tile-footer">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
+                                        <a data-product="Удален" class="circle-tile-footer product">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -329,7 +368,7 @@
                                             <?php } ?>
                                             <span id="sparklineA"></span>
                                         </div>
-                                        <a href="#" class="circle-tile-footer">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
+                                        <a data-product="Новинка" class="circle-tile-footer product">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -351,7 +390,7 @@
                                                 <?php endif ?>
                                             <?php } ?>
                                         </div>
-                                        <a href="#" class="circle-tile-footer">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
+                                        <a data-product="Хит продаж " class="circle-tile-footer product">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -392,7 +431,7 @@
                                             <?php } ?>
                                             
                                         </div>
-                                        <a href="#" class="circle-tile-footer">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
+                                        <a data-product="Обычный товар" class="circle-tile-footer product">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -412,6 +451,7 @@
                         <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
                             Добавить товар
                         </button>
+
                     </div>
 
                     <div class="col-lg-12 header-obj">
@@ -577,14 +617,18 @@
                           <strong>Ура! </strong> Категория успешно добавлена
                         </div>
 
-                           <div class="alert alert-danger">
+                        <div class="alert alert-danger">
                           <strong>Ошибка! </strong> Заполните название категории
+                        </div>
+
+                        <div class="alert alert-danger" id="category">
+                          <strong>Эх! </strong> Вы удалили категорию
                         </div>
                 </div>  
                     <?php foreach ($defTag as $key => $val) {?>
                         <div class="col-md-4 categor">
                             <ul id="tree3"> 
-                                <li class="tree" ><a href="#"><?php echo $val["name"]; ?></a><i data-id="<?php echo $val["id"]; ?>" class="fa fa-plus-circle add-under-cat" aria-hidden="true"></i><i data-id="<?php echo $val["id"]; ?>" class="fa fa-minus-circle del-def" aria-hidden="true"></i>
+                                <li class="tree" id="qwe" data-id="<?php echo $val["id"]; ?>" ><a href="#"><?php echo $val["name"]; ?></a><i data-id="<?php echo $val["id"]; ?>" class="fa fa-plus-circle add-under-cat" aria-hidden="true"></i><i data-id="<?php echo $val["id"]; ?>" class="fa fa-minus-circle del-def" aria-hidden="true"></i>
                                     <ul>
                                         <?php foreach ($underCat as $key => $value) { ?>
                                             <?php if ($val["id"] === $value["def_category_id"]) { ?>
@@ -606,7 +650,39 @@
                     <div class="page-header">
                         <h3><span class="glyphicon glyphicon-user fa-icon"></span>Удалить пользователя</h3>
                     </div>
-                    user  
+                    <div class="alert alert-success user-deleted">
+                      <strong>Успех!</strong> Пользователь удален.
+                    </div>
+                    <div class="well">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>#id</th>
+                              <th>Email</th>
+                              <th>Ф.И.О</th>
+                              <th style="width: 36px;"></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php foreach ($allClient as $key => $value) { ?>
+                                <?php if ($value["approve"] == 0){ ?>
+                                    <tr data-idClient="<?php echo $value['idclient']; ?>">
+                                        <td>#<?php echo $value["idclient"]; ?></td>
+                                        <td><?php echo $value["email"]; ?></td>
+                                        <td><?php echo $value["full_name"]; ?></td>
+                                        <td>
+                                            <a role="button"><i data-idClient="<?php echo $value['idclient']; ?>" class="fa fa-times del-user" aria-hidden="true"></i></a>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                            <?php } ?>
+                          </tbody>
+                        </table>
+                        
+                    </div>
+                    <form action="http://localhost/shop/excelUser" method="post" class="form-feedback">
+                            <button class="btn btn-primary exel-report">Отчет в Excel</button>
+                        </form>
                 </div>      
             </div>
         </div>

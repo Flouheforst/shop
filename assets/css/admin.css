@@ -12,6 +12,9 @@ body, html{
  	margin:50px 15px;
     margin-top: 15%;
 }
+#statistic .product {
+  cursor: pointer;
+}
 
 h1.title { 
 	font-size: 50px;
@@ -691,6 +694,9 @@ span.input-group-addon i {
     background: #E74C3C !important;
 
 }
+#user .user {
+  padding-bottom: 20px;
+}
  .number {
     position: absolute;
     bottom: 25px;
@@ -703,6 +709,7 @@ span.input-group-addon i {
     font-size: 11px;
     line-height: 20px;
     background-color: #2c3e50;
+}
 }
 
 .dropdown-menu {
@@ -999,6 +1006,7 @@ span.input-group-addon i {
     color: rgba(255,255,255,0.5);
     background-color: rgba(0,0,0,0.1);
     transition: all ease-in-out .3s;
+    cursor: pointer;
 }
 
 .circle-tile-footer:hover {
@@ -1041,3 +1049,91 @@ span.input-group-addon i {
   margin-right: 5px;
 }
 
+#feedback .form-feedback {
+  padding-left: 5px;
+} 
+
+#statistic .item-stat .products {
+  overflow: hidden;
+  margin-top: 30px;
+  height: 519px;
+  position:relative;
+  border: 1px solid white;
+} 
+
+
+#statistic .item-stat .products .add-kor {
+    text-align: center;
+    padding: 8px;
+    background-color: #34495e;
+    position:absolute;
+    bottom: -10px;
+    width: 100%;
+}
+
+
+#statistic .item-stat .products .add-kor a {
+    text-decoration: none;
+    color: white;
+}
+
+
+#statistic .item-stat .products .img-wrap {
+  width: 251px;
+  height: 216px;
+  overflow: hidden;
+}
+
+#statistic .item-stat .products a {
+  text-decoration: none;
+}
+
+#statistic .item-stat .products .hover-list {
+  color: white;
+} 
+
+#statistic .item-stat .products p:first-child{
+  padding: 15px;
+}
+
+#statistic .item-stat .products .price {
+  padding-top: 15px;
+}
+
+#statistic .item-stat .products p {
+  padding-left: 15px;
+}
+
+#statistic .item-stat .products span {
+  float: right;
+  padding-right: 15px;
+}
+
+#statistic .item-stat .products .vendor_code {
+  color: white;
+  text-transform: uppercase;
+}
+
+#statistic .item-stat .products .name {
+  text-align: center;
+}
+
+#statistic .item-stat .products:hover {
+  border: 1px solid #cdcdcd;
+  cursor: pointer;
+}
+
+#statistic .item-stat .products:hover .hover-list {
+  color: #969696;
+}
+
+#statistic .item-stat .products:hover .vendor_code {
+  background-color: #cdcdcd;
+}
+
+#statistic .item-stat .back {
+  float: left;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+}

@@ -21,4 +21,11 @@
 			return array_pop($res);
 		}
 
+		public function getOnApprove($nameCat){
+			return $this->db->getAll("select * from $this->tableName where name_def = ?s", $nameCat);
+		}
+
+		public function getOnAprUnder($nameCat){
+			return $this->db->getAll("select * from $this->tableName where name_under = ?s", $nameCat);
+		}
 	} 

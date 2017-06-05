@@ -12,7 +12,7 @@
     <a href="">Link</a>
     <a href="">Link</a>
 </div>
-<div class="container">
+<div class="container" id="drop-nav">
     <nav class="navbar navbar-default drop-nav">
         <div class="navbar-header">
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".js-navbar-collapse">
@@ -21,8 +21,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+            <a class="itemMenu" href="http://localhost/shop/">Авто</a>
+            <a class="itemMenu" href="http://localhost/shop/all-Product">Посмотреть все товары</a>
         </div>
-        
+
+
         
         <div class="collapse navbar-collapse js-navbar-collapse">
             <ul class="nav navbar-nav">
@@ -35,37 +38,36 @@
                                 <li class="dropdown-header">Новые товары в магазине</li>                            
                                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                                   <div class="carousel-inner">
-                                    <div class="item active">
-                                        <a href="#"><img src="http://placehold.it/254x150/3498db/f5f5f5/&text=New+Collection" class="img-responsive" alt="product 1"></a>
-                                        <h4><small>Summer dress floral prints</small></h4>                                        
-                                        <button class="btn btn-primary" type="button">49,99 <i class="fa fa-rub" aria-hidden="true"></i></button>
-                                            <?php if (isset($_SESSION["auth"])) { ?>
-                                                <button href="#" class="btn btn-default" type="button"><span class="glyphicon glyphicon-heart"></span> Добавить в корзину</button> 
-                                            <?php } ?>
-                                              
-                                    </div><!-- End Item -->
-                                    <div class="item">
-                                        <a href="#"><img src="http://placehold.it/254x150/ef5e55/f5f5f5/&text=New+Collection" class="img-responsive" alt="product 2"></a>
-                                        <h4><small>Gold sandals with shiny touch</small></h4>                                        
-                                        <button class="btn btn-primary" type="button">9,99 <i class="fa fa-rub" aria-hidden="true"></i></button>
-                                            <?php if (isset($_SESSION["auth"])) { ?>
-                                                <button href="#" class="btn btn-default" type="button"><span class="glyphicon glyphicon-heart"></span> Добавить в корзину</button>   
-                                            <?php } ?>
-                                             
-                                    </div><!-- End Item -->
-                                    <div class="item">
-                                        <a href="#"><img src="http://placehold.it/254x150/2ecc71/f5f5f5/&text=New+Collection" class="img-responsive" alt="product 3"></a>
-                                        <h4><small>Denin jacket stamped</small></h4>                                        
-                                        <button class="btn btn-primary" type="button">49,99 <i class="fa fa-rub" aria-hidden="true"></i></button>
-                                            <?php if (isset($_SESSION["auth"])){ ?>
-                                                <button href="#" class="btn btn-default" type="button"><span class="glyphicon glyphicon-heart"></span> Добавить в корзину</button> 
-                                            <?php } ?>
-                                             
-                                    </div><!-- End Item -->                                
+                                    <?php foreach ($new["newOne"] as $key => $value) { ?>
+                                        <div class="item active">
+                                            <a href="#"><img src="<?php echo $value["photo"]; ?>" class="img-responsive" alt="product 1"></a>
+                                            <h4><small><?php echo $value["name"]; ?></small></h4>                                        
+                                            <button class="btn btn-primary" type="button"><?php echo $value["price"]; ?> <i class="fa fa-rub" aria-hidden="true"></i></button>
+                                                <?php if (isset($_SESSION["auth"])) { ?>
+                                                    <button href="#" class="btn btn-default" type="button"><span class="glyphicon glyphicon-heart"></span> Добавить в корзину</button> 
+                                                <?php } ?>
+                                                  
+                                        </div><!-- End Item -->
+                                    <?php } ?>
+                                    
+
+                                    <?php foreach ($new["newTwo"] as $key => $value) { ?>
+                                        <div class="item">
+                                            <a href="#"><img src="<?php echo $value["photo"]; ?>" class="img-responsive" alt="product 2"></a>
+                                            <h4><small><?php echo $value["name"]; ?></small></h4>                                        
+                                            <button class="btn btn-primary" type="button"><?php echo $value["price"]; ?> <i class="fa fa-rub" aria-hidden="true"></i></button>
+                                                <?php if (isset($_SESSION["auth"])) { ?>
+                                                    <button href="#" class="btn btn-default" type="button"><span class="glyphicon glyphicon-heart"></span> Добавить в корзину</button>   
+                                                <?php } ?>
+                                                 
+                                        </div><!-- End Item -->
+                                    <?php } ?>
+                                    
+                                                                  
                                   </div><!-- End Carousel Inner -->
                                 </div><!-- /.carousel -->
                                 <li class="divider"></li>
-                                <li><a href="#">Посмотреть все товары <span class="glyphicon glyphicon-chevron-right pull-right"></span></a></li>
+                                <li><a href="http://localhost/shop/all-Product">Посмотреть все товары <span class="glyphicon glyphicon-chevron-right pull-right"></span></a></li>
                             </ul>
                         </li>
                         <?php foreach ($resCat as $key => $value) { ?>
@@ -74,20 +76,18 @@
                                     <li class="dropdown-header"> <?php echo $value["name"]; ?></li>
                                     <?php foreach ($resUnder as $k => $val) { ?>
                                         <?php if ($value["id"] === $val["def_category_id"]) { ?>
-                                            <li><a href="#"><?php echo $val["name"]; ?></a></li>
+                                            <li><a href="http://localhost/shop/product?product-name=<?php echo $val['name']; ?>"><?php echo $val["name"]; ?></a></li>
                                         <?php } ?>
-                                    <?php } ?>
-
-                                    
+                                    <?php } ?>                   
                                 </ul>
                             </li>
                         <?php } ?>
                         <div class="col-lg-3 newsletter">
                             <h3>Рассылка</h3>
-                             <form class="form" role="form">
+                             <form method="post" action="http://localhost/shop/feedBack">
                               <div class="form-group">
                                 <label class="sr-only" for="email">Введите Email</label>
-                                <input type="email" class="form-control" id="email" placeholder="Введите email">                                                              
+                                <input name="text" type="email" class="form-control" id="email" placeholder="Введите email">                                                              
                               </div>
                               <button type="submit" class="btn btn-primary btn-block">Отправить</button>
                             </form> 
@@ -103,18 +103,20 @@
 <div class="container">
     <section id="hit">
          <div class="row">
-            <div class="header-hit">
-                <div class="col-lg-4 img1">
-                    <img src="assets/image/arrow.jpg">
-                 </div>
-                <div class="col-lg-4">
-                    <h1>Хиты продаж</h1>
+            <?php if ( !empty($hitPrd) ){ ?>
+                <div class="header-hit">
+                    <div class="col-lg-4 img1">
+                        <img src="assets/image/arrow.jpg">
+                     </div>
+                        <div class="col-lg-4">
+                            <h1>Хиты продаж</h1>
+                        </div>
+                    
+                    <div class="col-lg-4 img2">
+                        <img src="assets/image/arrow.jpg">
+                    </div>
                 </div>
-                <div class="col-lg-4 img2">
-                    <img src="assets/image/arrow.jpg">
-                </div>
-
-            </div>
+            <?php } ?>
              <?php foreach ($hitPrd as $key => $value) {?>
                 <div class="col-lg-3" >
                     <a href="#">
@@ -210,18 +212,20 @@
     <?php if ( isset($stock)) { ?>
         <section id="hit">
              <div class="row">
-                <div class="header-hit">
-                <div class="col-lg-4 img1">
-                        <img src="assets/image/arrow.jpg">
-                     </div>
-                    <div class="col-lg-4">
-                        <h1>Акции</h1>
+                <?php if ( !empty($stock) ){ ?>
+                    <div class="header-hit">
+                        <div class="col-lg-4 img1">
+                            <img src="assets/image/arrow.jpg">
+                        </div>
+                        <div class="col-lg-4">
+                            <h1>Акции</h1>
+                        </div>
+                         <div class="col-lg-4 img2">
+                            <img src="assets/image/arrow.jpg">
+                        </div>
                     </div>
-                     <div class="col-lg-4 img2">
-                        <img src="assets/image/arrow.jpg">
-                    </div>
-                </div>
-                 <?php foreach ($stock as $key => $value) {?>
+                <?php } ?>
+                <?php foreach ($stock as $key => $value) {?>
                     <div class="col-lg-3" >
                         <a href="#">
                             <div class="product" data-id="<?php echo $value['id']; ?>">
@@ -284,9 +288,9 @@
             </div>
             <div class="col-lg-5">
                 <h2>Рассылка</h2>
-                <form class="form-inline">
+                <form class="form-inline" method="post" action="http://localhost/shop/feedBack">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Введите email">
+                        <input name="text"  type="text" class="form-control" placeholder="Введите email">
                     </div>
                     <button type="submit" class="btn btn-primary">Отправить</button>
                 </form>
@@ -298,11 +302,11 @@
             <div class="col-lg-4 avto">
                 <h2>Авто</h2>
                 <ul>
-                    <li class=""><a class="" href="">Обратная связь</a></li>
-                    <li class=""><a class="" href="">Правила возврата</a></li>
-                    <li class=""><a class="" href="">Акции</a></li>
-                    <li class=""><a class="" href="">Доставка</a></li>
-                    <li class=""><a class="" href="">Помощь</a></li>
+                    <li class=""><a href="http://localhost/shop/feedback">Обратная связь</a></li>
+                    <li class=""><a href="http://localhost/shop/pravila-vozvrata">Правила возврата</a></li>
+                    <li class=""><a href="http://localhost/shop/shares">Акции</a></li>
+                    <li class=""><a href="http://localhost/shop/dostavka">Доставка</a></li>
+                    <li class=""><a href="http://localhost/shop/help">Помощь</a></li>
                 </ul>
             </div>
             
@@ -313,7 +317,7 @@
                         <li class="header"> <a href=""><?php echo $value["name"]; ?></a> </li>
                         <?php foreach ($resUnder as $k => $val) { ?>
                             <?php if ($value["id"] == $val["def_category_id"]) { ?>
-                                <li> <a href="">  <?php echo $val["name"]; ?> </a></li>
+                                <li> <a href="http://localhost/shop/product?product-name=<?php echo $val['name']; ?>">  <?php echo $val["name"]; ?> </a></li>
                             <?php } ?>
                         <?php } ?>
                     <?php } ?>
@@ -352,13 +356,13 @@
                 </a>
             </div>
             <div class="col-lg-4 bank-bank">
-                <a href="">
+                <a href="http://localhost/shop/oplata">
                     <img src="assets/image/visa2.png">
                 </a>
-                <a href="">
+                <a href="http://localhost/shop/oplata">
                     <img src="assets/image/mastercard2.png">
                 </a>
-                <a href="">
+                <a href="http://localhost/shop/oplata">
                     <img src="assets/image/mir3.png">
                 </a>
                 

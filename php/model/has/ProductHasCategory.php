@@ -19,4 +19,21 @@
 
 		}
 		
+		public function onCat($resCat){
+			$catPrd ;
+			foreach ($resCat as $key => $value) {
+				$catPrd[$key] = $this->db->getOne("select Product_id from $this->tableName where category_id = ?s", $value["id"]);
+			}
+
+			return $catPrd;
+		}
+
+		public function onCatUnder($resCat){
+			$catPrd;
+			foreach ($resCat as $key => $value) {
+				$catPrd[$key] = $this->db->getOne("select Product_id from $this->tableName where category_id = ?s", $value["id"]);
+			}
+
+			return $catPrd;
+		}
 	} 

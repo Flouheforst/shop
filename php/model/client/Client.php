@@ -30,7 +30,7 @@
 			$res = $this->db->getAll("SELECT $this->fields FROM $this->tableName");
 
 			foreach ($res as $key => $value) {
-				if ( password_verify($password, $value["password"]) && $email == $value["email"]) {
+				if ( password_verify($password, $value["password"]) && $email == $value["email"] && $value["approve"] == 0) {
 					$result = $this->db->getAll("SELECT email, full_name, idclient FROM $this->tableName where email = ?s", $email);
 					$_SESSION["dataUser"] = $result;
 					$_SESSION["auth"] = true;
@@ -38,5 +38,19 @@
 					$_SESSION["auth"] = false;
 				} 
 			}
+		}
+
+		public function getCount(){
+			return $this->db->getAll("select count(*) from $this->tableName");
+		}
+
+		public function getAllC(){
+			return $this->db->getAll("select idclient, email, full_name, approve from $this->tableName where approve = 0");
+		}
+
+		public function changeApprove($id, $approve){
+			$this->db->query("UPDATE $this->tableName
+					SET approve = ?s
+					where idclient = ?i", $approve, $id);
 		}
 	} 

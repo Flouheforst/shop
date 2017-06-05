@@ -36,4 +36,26 @@
 				} 
 			}
 		}
+
+		public function feedBack(){
+			if ( !empty($_POST["text"])) {
+				$text = $_POST["text"];
+				$data = date('d.m.Y');
+				$user = $_SESSION["dataUser"][0]["email"];
+				
+
+				$feed = new \php\model\feadback\Feedback();
+				$res = $feed->addFeedBack($text, $data, $user);
+				
+				if ($res) {
+					\php\App::redirect("shop/");
+				} else {
+					\php\App::redirect("shop/feedback");
+				} 
+			} else {
+				\php\App::redirect("shop/feedback");
+			}
+		}
+
+		
 	} 

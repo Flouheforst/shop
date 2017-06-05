@@ -9,7 +9,7 @@
 		}
 
 		public function fields(){
-			return ["id", "price", "photo", "brand", "vendor_code", "dimensions", "mark_car", "description", "approve", "quantity", "name", "data"];
+			return [ "price", "photo", "brand", "vendor_code", "dimensions", "mark_car", "description", "approve", "quantity", "name", "data"];
 		}
 
 		public function addProduct($price, $brand, $article, $deminsion, $mark, $quatity, $desciption, $product, $uploadfile, $name){
@@ -25,9 +25,25 @@
 			return $this->db->getAll("SELECT id, approve, COUNT(approve) FROM $this->tableName GROUP BY approve;");
 		}
 
-		public function getOnApprove($approve){
-			return $this->db->getAll("SELECT  $this->fields from $this->tableName where approve = ?s limit 4", $approve);
+		public function getOnApprove($approve, $quantity){
+			return $this->db->getAll("SELECT  $this->fields from $this->tableName where approve = ?s limit ?i", $approve, $quantity);
 		}
+		public function changeApprove($prdCat, $approve){
+			foreach ($prdCat as $key => $value) {
+				$res = $this->db->query("UPDATE shop.`product`
+					SET approve = ?s
+					WHERE id = ?i", $approve, $value);
+			}
 
 		
+		}
+
+		public function deleteOnId($id, $approve){
+			$id = intval($id);
+			$this->db->query("UPDATE $this->tableName
+					SET approve = ?s
+					where id = ?i", $approve, $id);
+		}
+
+
 	} 
