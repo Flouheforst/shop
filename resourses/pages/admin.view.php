@@ -50,6 +50,7 @@
                         <button class="material-button option2" data-toggle="modal" data-target="#myModal" type="button">
                             <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
                         </button>
+                      
                     </li>
                     <li class="option scale-on">
                         <button class="material-button option3" type="button">
@@ -71,8 +72,6 @@
                     <span class="fa fa-plus" aria-hidden="true"></span>
                 </button>
             </div>
-            
-
         </div>
         <div class="col-lg-4 product-widget">
             <div class="material-button-product">
@@ -83,7 +82,7 @@
                         </button>
                     </li>
                     <li class="option scale-on">
-                        <button class="material-button option2" type="button">
+                        <button class="material-button option2" type="button" data-target="#change-approve" data-toggle="modal">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         </button>
                     </li>
@@ -98,6 +97,62 @@
                 </button>
             </div>
         </div>
+        
+
+        <!-- Modal -->
+        <div class="modal fade" id="change-approve" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Изменить состояние товара</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="product" checked value="Обычный товар">
+                                        Обычный товар
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="product" value="Газета">
+                                        Газета
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="product" value="Акция">
+                                        Акция 
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="product" value="Новинка">
+                                        Новинка 
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="product" value="Хит продаж ">
+                                        Хит продаж 
+                                    </label>
+                                </div>
+                            </div>
+                    </form>
+                </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary save-approve">Сохранить</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -204,6 +259,7 @@
                 </div>
             </div>
         </div> 
+
         <div class="col-sm-9 affix-content" id="feedback">
             <div class="container">
                 <div class="page-header">

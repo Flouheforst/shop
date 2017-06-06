@@ -164,7 +164,40 @@ $(document).ready(function(){
 
 
 	$("#admin-wrapp .option2").click(function(){
-		alert($(".product-widget li").data("id"));
+		var id = $(".product-widget li").data("id");
+
+		$(".product-widget").css({
+							display: 'none'
+						});
+					$(".bg-layer").hide();
+
+		$("#change-approve .save-approve").data("id", id);
+	});
+
+	$("#change-approve .save-approve").click(function(){
+		var id = $(this).data("id");
+
+		if (id.length !== 0) {
+			var val = $("#change-approve input:checked").val();
+
+			if (val.length !== 0) {
+
+				$.ajax({
+					url : "http://localhost/shop/changeApprovePrd",
+					method: 'POST',
+					data : {
+						id : id,
+						approve : val
+					},
+
+					success: function(data) {
+						if (data === "ok") {
+							window.location.href = "http://localhost/shop/admin";
+						}
+					} 
+				})
+			}
+		}	
 	});
 
 	$("#admin-wrapp .option3").click(function(){
@@ -206,17 +239,7 @@ $(document).ready(function(){
 		$(".product-widget li").removeData("id");
 
 	});
- 
 
-	$(".product-widget option .option1").click(function(){
-		alert("1");
-	});
-	$(".product-widget option .option2").click(function(){
-		alert("2");
-	});
-	$(".product-widget option .option3").click(function(){
-		alert("3");
-	});
 
 
 	$("#category .add-cat button").click(function(e){

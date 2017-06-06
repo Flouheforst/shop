@@ -106,14 +106,35 @@
 
 			$product = new \php\model\product\Product();
 			$idPrd = $product->getIdOnArticul($articul);
+
 			$prdHasCat = new \php\model\has\ProductHasCategory();
 			$catId = $prdHasCat->getOnPrdId($idPrd);
 
+			$defCat = new \php\model\category\DefCategory();
+			$defUnderCat = new \php\model\category\UnderCat();
+
+			$defCategoryId = $defUnderCat->getDefCategoryId($underCat);
+			$nameDef = $defCat->getName($defCategoryId);
+
 			$category = new \php\model\category\Category();
-			$res = $category->updateUnder($catId, $underCat);
-			
+			$res = $category->updateUnder($catId, $underCat, $nameDef);
+
 			echo $res;
 
+		}
+	});
+
+	$router->post("/changeApprovePrd", function(){
+		$id = $_POST["id"];
+		$approve = $_POST["approve"];
+
+		$product = new \php\model\product\Product();
+		$res = $product->changeApprovePrd($id, $approve);
+
+		if ($res) {
+			echo "ok";
+		} else {
+			echo "nope";
 		}
 	});
 

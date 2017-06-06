@@ -34,8 +34,13 @@
 					SET approve = ?s
 					WHERE id = ?i", $approve, $value);
 			}
+		}
 
-		
+		public function changeApprovePrd($prdCat, $approve){
+			$prdCat = intval($prdCat);
+			return $this->db->query("UPDATE shop.`product`
+					SET approve = ?s
+					WHERE id = ?i", $approve, $prdCat);
 		}
 
 		public function deleteOnId($id, $approve){

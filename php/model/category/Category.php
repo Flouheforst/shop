@@ -29,10 +29,10 @@
 			return $this->db->getAll("select * from $this->tableName where name_under = ?s", $nameCat);
 		}
 
-		public function updateUnder($catId, $underCat){
+		public function updateUnder($catId, $underCat, $nameDef){
 			$catId = intval($catId);
 			return $this->db->query("UPDATE $this->tableName
-					SET name_under = ?s
-					where id = ?i", $underCat, $catId);
+					SET name_under = ?s, name_def = ?s
+					where id = ?i", $underCat, $nameDef, $catId);
 		}
 	} 
