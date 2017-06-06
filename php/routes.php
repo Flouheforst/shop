@@ -138,6 +138,31 @@
 		}
 	});
 
+	$router->post("/addKur", function(){
+		if ($_SESSION["admin-auth"]) {
+			$login = $_POST["login"];
+			$pass = $_POST["pass"];
+			$tel = $_POST["tel"];
+			$adres = $_POST["adres"];
+			$email = $_POST["email"];
+
+			$uploaddir = "assets/image/kurier/";
+			$uploadfile = $uploaddir . $_FILES['photo']['name'];
+
+			if (move_uploaded_file($_FILES['photo']['tmp_name'], $uploadfile)) {
+				$passwordHash = password_hash($pass, PASSWORD_DEFAULT);
+
+				$provider = new \php\model\provider\Provider();
+				$res = $provider->addProvider($login, $passwordHash, $tel, $adres, $email, $uploadfile);
+			}
+			
+
+			if ($res) {
+				\php\App::redirect("shop/admin");
+			}
+		}
+	});
+
 	$router->get("/signAdmin", function(){
 
 		\php\App::renderPages("signAdmin");

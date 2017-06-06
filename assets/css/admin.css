@@ -610,10 +610,6 @@ span.input-group-addon i {
     transform:         translate3d(-74px,29px,0) scale(1,1);
 }
 
-
-
-
-
 .navbar-inverse {
     background-color: #2C3E50;
     border-color: #2C3E50;
@@ -746,16 +742,12 @@ span.input-group-addon i {
     -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
     box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
 }
-/*navbar-right=======END========*/
 
-/*sidebar-toggle=============*/
 .sidebar-toggle:hover, .sidebar-toggle:focus {
     color: #fff;
     text-decoration: underline;
 }
 
-
-/*sidr-NAVBAR=======START========*/
 .navbar-nav-1{width: 100%;background-color:#34495E;height:auto;overflow: hidden;z-index: 1020;position: relative;}
 
 .side-user {
@@ -766,6 +758,7 @@ span.input-group-addon i {
     border-bottom: 1px solid #142638;
     text-align: center;
 }
+
 .close-btn {
     position: absolute;
     z-index: 99;
@@ -777,7 +770,9 @@ span.input-group-addon i {
     padding: 0px;
     cursor: pointer;
 }
+
 .close-btn .fa-window-close{color:#fff;font-size: 25px;}
+
 .welcome {
     margin: 0;
     font-style: italic;
@@ -791,16 +786,19 @@ span.input-group-addon i {
     font-weight: 300;
     color: #ccd1d7;
 }
+
 .side-user a{
    color:#fff;
 }
+
 .nav-search{border-top: 1px solid #54677a;}
 .nav-search .form-control{border: 1px solid #000;border-radius: 0px;}
 .nav-search .btn{border: 1px solid #000;border-radius: 0px;}
 
 .dashboard>a{
     color:#fff;
-    }
+}
+
 .side-nav li {
     border-top: 1px solid #54677a;
     border-bottom: 1px solid #142638;
@@ -835,19 +833,19 @@ span.input-group-addon i {
     color: darkcyan;
     background: black;
 }
+
 .nav > li > a:hover, .nav > li > a:focus {
     text-decoration: none;
     background-color: #3d566e;
 }
-/*sidr-NAVBAR=======END========*/
-@media (min-width: 768px){
 
-#page-wrapper {
-   
-    padding: 0 30px;
-    min-height: 1300px;
-    border-left: 1px solid #2c3e50;
-}
+@media (min-width: 768px){
+  #page-wrapper {
+     
+      padding: 0 30px;
+      min-height: 1300px;
+      border-left: 1px solid #2c3e50;
+  }
 }
 
 #page-wrapper {
@@ -874,9 +872,6 @@ span.input-group-addon i {
     
 }
 
-
-
-
 @media (min-width: 768px){
 .circle-tile {
     margin-bottom: 30px;
@@ -898,10 +893,6 @@ span.input-group-addon i {
     color: #fff;
     transition: all ease-in-out .3s;
 }
-
-/* -- Background Helper Classes */
-
-/* Use these to cuztomize the background color of a div. These are used along with tiles, or any other div you want to customize. */
 
 .dark-blue {
     background-color: #34495e;
@@ -958,8 +949,6 @@ span.input-group-addon i {
     background-color: #f1c40f;
 }
 
-/* -- Text Color Helper Classes */
-
  .text-dark-blue {
     color: #34495e;
 }
@@ -988,8 +977,6 @@ span.input-group-addon i {
     color: rgba(255,255,255,0.7);
 }
 
-
-
 .circle-tile-heading .fa {
     line-height: 80px;
 }
@@ -997,6 +984,7 @@ span.input-group-addon i {
 .circle-tile-content {
     padding-top: 50px;
 }
+
 .circle-tile-description {
     text-transform: uppercase;
 }
@@ -1045,7 +1033,11 @@ span.input-group-addon i {
     font-weight: 400;
     color: #fff;
 }
-#datetime{color:#fff;}
+
+#datetime{
+  color:#fff;
+}
+
 .tile-img {
     text-shadow: 2px 2px 3px rgba(0,0,0,0.9);
 }
@@ -1073,7 +1065,6 @@ span.input-group-addon i {
   border: 1px solid white;
 } 
 
-
 #statistic .item-stat .products .add-kor {
     text-align: center;
     padding: 8px;
@@ -1082,7 +1073,6 @@ span.input-group-addon i {
     bottom: -10px;
     width: 100%;
 }
-
 
 #statistic .item-stat .products .add-kor a {
     text-decoration: none;
@@ -1150,8 +1140,6 @@ span.input-group-addon i {
   text-decoration: none;
 }
 
-
-
 #category .change-under input {
     border-radius: 0px;
     padding: 12px !important;
@@ -1168,7 +1156,6 @@ span.input-group-addon i {
     box-shadow: 0px 3px 9px 0px rgba(0,0,0,.09);
 }
 
-
 #category .change-under button a{
     color: white;
     text-decoration: none;
@@ -1178,9 +1165,11 @@ span.input-group-addon i {
     text-transform: uppercase;
     padding: 12px 15px 12px 15px;
 } 
+
 #category .change-under button i {
     padding-left: 5px;
 }
+
 #category .change-under p {
     padding: 10px;
     margin-top: 10px;
@@ -1188,4 +1177,17 @@ span.input-group-addon i {
 
 #category .change-under .alert {
     margin-top: 10px;
+}
+
+#reg .form-group {
+  margin-bottom: 10px;
+  width: 49%;
+} 
+
+#reg .form-group input {
+  width: 100%;
+}
+
+#reg .reg {
+  overflow: hidden;
 }

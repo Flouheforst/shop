@@ -29,6 +29,7 @@
                         <li class="user"><a href=""><span class="glyphicon glyphicon-user fa-icon"></span>Удалить пользователя</a></li>
                         <li class="comment"><a href=""><span class="glyphicon glyphicon-comment fa-icon"></span> Удалить комметарий</a></li>
                         <li class="feedback"><a href=""><i class="fa fa-commenting" aria-hidden="true"></i> Обратная связь</a></li>
+                        <li class="reg"><a href=""><i class="fa fa-registered" aria-hidden="true"></i> Регистрация курьера</a></li>
                         <li class=""><a href="http://localhost/shop/"><span class="glyphicon glyphicon-eye-open fa-icon"></span>Посмотреть сайт</a></li>
                         <li class=""><a href="http://localhost/shop/adminLogout"><span class="glyphicon glyphicon-log-out fa-icon"></span>Выйти</a></li>
                     </ul>
@@ -259,7 +260,55 @@
                 </div>
             </div>
         </div> 
-
+        <div class="col-lg-9 affix-content" id="reg">
+            <div class="container">
+                <div class="page-header">
+                    <h3><i class="fa fa-registered" aria-hidden="true"></i>Регистрация курьера</h3>
+                </div>
+                    <div class="row ">
+                        <div class="col-lg-8 reg">
+                            <form method="post" action="http://localhost/shop/addKur" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <input name="login" type="text" class="form-control inp-login" placeholder="Логин" data-item="login">
+                                </div>
+                                <div class="form-group">
+                                    <p class="form-control-static login">Пример: Flouheforst</p>
+                                </div>
+                                <div class="form-group">
+                                    <input name="pass" type="password" class="form-control inp-pass" placeholder="Пароль" data-item="pass">
+                                </div>
+                                <div class="form-group">
+                                    <p class="form-control-static pass">Пример: 12345qwe</p>
+                                </div>
+                                <div class="form-group">
+                                    <input name="tel" type="text" class="form-control inp-tel" placeholder="Телефон" data-item="tel">
+                                </div>
+                                <div class="form-group">
+                                    <p class="form-control-static tel">Пример: 8-956-245-23-64</p>
+                                </div>
+                                <div class="form-group">
+                                    <input name="adres" type="text" class="form-control inp-adres" placeholder="Адрес" data-item="adres">
+                                </div>
+                                <div class="form-group">
+                                    <p class="form-control-static adres">Пример: Мос. обл г.Чехов ул.Чехова д.200</p>
+                                </div>
+                                <div class="form-group">
+                                    <input name="email" type="email" class="form-control inp-email" placeholder="Email" data-item="email">
+                                </div>
+                                <div class="form-group">
+                                    <p class="form-control-static email">Пример: some@mail.ru</p>
+                                </div>
+                                <div class="form-group">
+                                    <label>Добавьте фотографию</label>
+                                    <input type="file" name="photo" id="exampleInputFile">
+                                    <p class="help-block">Эта фотография будет прикреплена к поставщику</p>
+                                </div>
+                                <button type="submit" class="btn btn-default " id="btn-reg">Зарегестрировать</button>
+                            </form>
+                        </div>
+                    </div>
+            </div>
+        </div>
         <div class="col-sm-9 affix-content" id="feedback">
             <div class="container">
                 <div class="page-header">

@@ -2,12 +2,14 @@ $("#category .add-cat .alert-success").hide();
 $("#category .add-cat .alert-danger").hide();
 
 $(".bg-layer").hide();
+$(".user-deleted").hide();
+
 $("#category").hide();
 $("#product").hide();
 $("#comment").hide();
 $("#user").hide();
-$(".user-deleted").hide();
 $("#feedback").hide();
+$("#reg").hide();
 $("#changeUnder").hide();
 $("#successChangeUnder").hide();
 (function ($) {
@@ -31,6 +33,20 @@ $(document).ready(function(){
 		$("#user").hide();
 		$("#comment").hide();
 		$("#feedback").hide();
+		$("#reg").hide();
+	});
+
+	$(".sidebar-navbar-collapse ul .reg").click(function(e){
+		e.preventDefault();
+		$(".sidebar-navbar-collapse ul li").removeClass("active");
+		$(this).addClass("active");
+		$("#statistic").hide();
+		$("#product").hide();
+		$("#category").hide();
+		$("#user").hide();
+		$("#comment").hide();
+		$("#feedback").hide();
+		$("#reg").show();
 	});
 
 	$(".sidebar-navbar-collapse ul .product").click(function(e){
@@ -43,7 +59,7 @@ $(document).ready(function(){
 		$("#user").hide();
 		$("#comment").hide();
 		$("#feedback").hide();
-
+		$("#reg").hide();
 	});
 
 	$(".sidebar-navbar-collapse ul .feedback").click(function(e){
@@ -56,6 +72,7 @@ $(document).ready(function(){
 		$("#feedback").show();
 		$("#user").hide();
 		$("#comment").hide();
+		$("#reg").hide();
 	});
 
 	$(".sidebar-navbar-collapse ul .category").click(function(e){
@@ -68,7 +85,7 @@ $(document).ready(function(){
 		$("#user").hide();
 		$("#comment").hide();
 		$("#feedback").hide();
-
+		$("#reg").hide();
 	});
 	$(".sidebar-navbar-collapse ul .user").click(function(e){
 		e.preventDefault();
@@ -80,7 +97,7 @@ $(document).ready(function(){
 		$("#user").show();
 		$("#comment").hide();
 		$("#feedback").hide();
-
+		$("#reg").hide();
 	});
 	$(".sidebar-navbar-collapse ul .comment").click(function(e){
 		e.preventDefault();
@@ -92,6 +109,7 @@ $(document).ready(function(){
 		$("#user").hide();
 		$("#comment").show();
 		$("#feedback").hide();
+		$("#reg").hide();
 
 	});
 
@@ -488,4 +506,58 @@ $(document).ready(function(){
 			}, 2000);
 		}
 	});
+
+	$("#reg .form-group input").keyup(function(){
+		var text = $(this).val();
+		var data = $(this).data("item");
+		switch (data) {
+			case "login":
+				$("#reg .form-group .login").text(text);
+			break;
+			case "pass":
+				$("#reg .form-group .pass").text(text);
+			break;
+			case "tel":
+				$("#reg .form-group .tel").text(text);
+			break;
+			case "adres":
+				$("#reg .form-group .adres").text(text);
+			break;
+			case "email":
+				$("#reg .form-group .email").text(text);
+			break;
+		}
+	});
+
+	/*
+	$("#reg .reg #btn-reg").click(function(e){
+		e.preventDefault();
+		var login = $("#reg .reg .inp-login").val();
+		var pass = $("#reg .reg .inp-pass").val();
+		var tel = $("#reg .reg .inp-tel").val();
+		var adres = $("#reg .reg .inp-adres").val();
+		var email = $("#reg .reg .inp-email").val();
+		
+		if (login.length !== 0 && pass.length !== 0  && tel.length !== 0  && adres.length !== 0  && email.length !== 0 ) {
+			$.ajax({
+				url : "http://localhost/shop/addKur",
+				method: 'POST',
+				data : {
+					login : login,
+					pass : pass,
+					tel : tel,
+					adres : adres,
+					email : email
+				},
+
+				success: function(data) {
+					if (data == 1) {
+						alert("Курьер успешно добавлен");
+					}
+				}
+			})
+		}
+	});
+	*/
+
 });
