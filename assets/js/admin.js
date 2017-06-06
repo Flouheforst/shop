@@ -8,7 +8,8 @@ $("#comment").hide();
 $("#user").hide();
 $(".user-deleted").hide();
 $("#feedback").hide();
-
+$("#changeUnder").hide();
+$("#successChangeUnder").hide();
 (function ($) {
 	$('.spinner .btn:first-of-type').on('click', function() {
 		$('.spinner input').val( parseInt($('.spinner input').val(), 10) + 1);
@@ -231,10 +232,12 @@ $(document).ready(function(){
 
 				success: function() {
 					$("#category .add-cat .alert-success").show();
+					
 				} 
 			});
 		} else {
 			$("#category .add-cat .alert-danger").show();
+			$("#category .add-cat #category").hide();
 		}
 	});
 
@@ -430,5 +433,36 @@ $(document).ready(function(){
 				}
 			}
 		})
+	});
+
+	$("#category .change-under .change-under-prd").click(function(e){
+		e.preventDefault();
+		var underCat = $("#category .change-under .under-cat").val();
+		var articul = $("#category .change-under .articul").val();
+		
+		if (underCat.length !== 0 && articul.length !== 0) {
+			$.ajax({
+				url : "http://localhost/shop/changeUnder",
+				method: 'POST',
+				data : {
+					articul : articul,
+					underCat : underCat
+				},
+
+				success: function(data) {
+					if (data == 1 ) {
+						$("#successChangeUnder").show();
+						setTimeout(function(){
+							$("#successChangeUnder").hide();
+						}, 2000);
+					}
+				}
+			})
+		} else {
+			$("#changeUnder").show();
+			setTimeout(function(){
+				$("#changeUnder").hide();
+			}, 2000);
+		}
 	});
 });

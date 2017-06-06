@@ -28,4 +28,11 @@
 		public function getOnAprUnder($nameCat){
 			return $this->db->getAll("select * from $this->tableName where name_under = ?s", $nameCat);
 		}
+
+		public function updateUnder($catId, $underCat){
+			$catId = intval($catId);
+			return $this->db->query("UPDATE $this->tableName
+					SET name_under = ?s
+					where id = ?i", $underCat, $catId);
+		}
 	} 

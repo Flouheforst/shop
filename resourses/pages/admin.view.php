@@ -131,14 +131,17 @@
                             <div class="form-group">
                                 <label>Артикул</label>
                                 <input  name="article" type="text" class="article form-control" placeholder="Введите артикул">
+                                <small id="emailHelp" class="form-text text-muted">Повторяющихся артикулов не должно быть они уникальны.</small>
                             </div>
                             <div class="form-group">
                                 <label>Габариты</label>
                                 <input  name="deminsion" type="text" class="deminsion form-control" placeholder="Введите габариты">
+                                <small id="emailHelp" class="form-text text-muted">Пример габаритов: 10х10х10. Если габариты не известны указывается "-".</small>
                             </div>
                             <div class="form-group">
                                 <label>Марка автомобиля</label>
                                 <input  name="mark" type="text" class="mark form-control" placeholder="Введите марку автомобиля">
+                                <small id="emailHelp" class="form-text text-muted">Если марка автомобиля не известна то указывается "-".</small>
                             </div>
                             <div class="form-group quantity">
                                 <label>Количество</label>
@@ -276,7 +279,11 @@
                                             Пользователи
                                         </div>
                                         <div class="circle-tile-number text-faded">
-                                            <span id="sparklineA"><?php echo $countClient[0]["count(*)"]; ?></span>
+                                            <?php if (!empty($countClient[0]["count(*)"])){ ?>
+                                                <span id="sparklineA"><?php echo $countClient[0]["count(*)"]; ?></span>
+                                            <?php } else { ?>
+                                                <span id="sparklineA">0</span>
+                                            <?php } ?>
                                         </div>
                                         <a  class="circle-tile-footer getUser">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
                                     </div>
@@ -294,10 +301,14 @@
                                             Газета
                                         </div>
                                         <div class="circle-tile-number text-faded">
-                                            <?php foreach ($countPrd as $key => $value) { ?>
-                                                <?php if ($value["approve"] === "Газета"){ ?>
-                                                    <span id="sparklineA"><?php echo $value["COUNT(approve)"]; ?></span>
+                                            <?php if (!empty($countPrd)){ ?>
+                                                <?php foreach ($countPrd as $key => $value) { ?>
+                                                    <?php if ($value["approve"] === "Газета"){ ?>
+                                                        <span id="sparklineA"><?php echo $value["COUNT(approve)"]; ?></span>
+                                                    <?php } ?>
                                                 <?php } ?>
+                                            <?php } else { ?>
+                                                <span id="sparklineA">0</span>
                                             <?php } ?>
                                         </div>
                                         <a data-product="Газета" class="circle-tile-footer product">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
@@ -316,11 +327,16 @@
                                             Акция
                                         </div>
                                         <div class="circle-tile-number text-faded">
-                                            <?php foreach ($countPrd as $key => $value) { ?>
-                                                <?php if ($value["approve"] === "Акция"): ?>
-                                                    <span id="sparklineA"><?php echo $value["COUNT(approve)"]; ?></span>
-                                                <?php endif ?>
+                                            <?php if (!empty($countPrd)){ ?>
+                                                <?php foreach ($countPrd as $key => $value) { ?>
+                                                    <?php if ($value["approve"] === "Акция"): ?>
+                                                        <span id="sparklineA"><?php echo $value["COUNT(approve)"]; ?></span>
+                                                    <?php endif ?>
+                                                <?php } ?>
+                                            <?php } else { ?>
+                                                <span id="sparklineA">0</span>
                                             <?php } ?>
+                                            
                                         </div>
                                         <a data-product="Акция" class="circle-tile-footer product">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
                                     </div>
@@ -338,11 +354,16 @@
                                             Удаленные
                                         </div>
                                         <div class="circle-tile-number text-faded">
-                                            <?php foreach ($countPrd as $key => $value) { ?>
-                                                <?php if ($value["approve"] === "Удален"): ?>
-                                                    <span id="sparklineA"><?php echo $value["COUNT(approve)"]; ?></span>
-                                                <?php endif ?>
+                                            <?php if (!empty($countPrd)){ ?>    
+                                                <?php foreach ($countPrd as $key => $value) { ?>
+                                                    <?php if ($value["approve"] === "Удален"){ ?>
+                                                        <span id="sparklineA"><?php echo $value["COUNT(approve)"]; ?></span>
+                                                    <?php } ?>
+                                                <?php } ?>
+                                            <?php } else { ?>
+                                                <span id="sparklineA">0</span>
                                             <?php } ?>
+
                                             <span id="sparklineB"></span>
                                         </div>
                                         <a data-product="Удален" class="circle-tile-footer product">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
@@ -361,11 +382,16 @@
                                             Новинки
                                         </div>
                                         <div class="circle-tile-number text-faded">
-                                            <?php foreach ($countPrd as $key => $value) { ?>
-                                                <?php if ($value["approve"] === "Новинка"): ?>
-                                                    <span id="sparklineA"><?php echo $value["COUNT(approve)"]; ?></span>
-                                                <?php endif ?>
+                                            <?php if (!empty($countPrd)){ ?>
+                                                <?php foreach ($countPrd as $key => $value) { ?>
+                                                    <?php if ($value["approve"] === "Новинка"): ?>
+                                                        <span id="sparklineA"><?php echo $value["COUNT(approve)"]; ?></span>
+                                                    <?php endif ?>
+                                                <?php } ?>
+                                            <?php } else { ?>
+                                                <span id="sparklineA">0</span>
                                             <?php } ?>
+                                            
                                             <span id="sparklineA"></span>
                                         </div>
                                         <a data-product="Новинка" class="circle-tile-footer product">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
@@ -384,11 +410,16 @@
                                             Хиты продаж
                                         </div>
                                         <div class="circle-tile-number text-faded">
-                                            <?php foreach ($countPrd as $key => $value) { ?>
-                                                <?php if ($value["approve"] === "Хит продаж "): ?>
-                                                    <span id="sparklineA"><?php echo $value["COUNT(approve)"]; ?></span>
-                                                <?php endif ?>
+                                            <?php if (!empty($countPrd)){ ?>
+                                                <?php foreach ($countPrd as $key => $value) { ?>
+                                                    <?php if ($value["approve"] === "Хит продаж "): ?>
+                                                        <span id="sparklineA"><?php echo $value["COUNT(approve)"]; ?></span>
+                                                    <?php endif ?>
+                                                <?php } ?>
+                                            <?php } else { ?>
+                                                <span id="sparklineA">0</span>
                                             <?php } ?>
+                                            
                                         </div>
                                         <a data-product="Хит продаж " class="circle-tile-footer product">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
                                     </div>
@@ -424,11 +455,16 @@
                                             Обычные
                                         </div>
                                         <div class="circle-tile-number text-faded">
-                                            <?php foreach ($countPrd as $key => $value) { ?>
-                                                <?php if ($value["approve"] === "Обычный товар"): ?>
-                                                    <span id="sparklineA"><?php echo $value["COUNT(approve)"]; ?></span>
-                                                <?php endif ?>
+                                            <?php if (!empty($countPrd)){ ?>
+                                                <?php foreach ($countPrd as $key => $value) { ?>
+                                                    <?php if ($value["approve"] === "Обычный товар"): ?>
+                                                        <span id="sparklineA"><?php echo $value["COUNT(approve)"]; ?></span>
+                                                    <?php endif ?>
+                                                <?php } ?>
+                                            <?php } else { ?>
+                                                <span id="sparklineA">0</span>
                                             <?php } ?>
+                                            
                                             
                                         </div>
                                         <a data-product="Обычный товар" class="circle-tile-footer product">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
@@ -600,6 +636,30 @@
                 <div class="row">
                     <div class="page-header">
                     <h3><i class="fa fa-tags fa-icon" aria-hidden="true"></i>Работа с категориями</h3>
+                    
+                </div>
+                <div class="change-under">
+                    <div class="title">
+                        <h2>Изменить подкатегорию у товара</h2>
+                    </div>
+                    <form class="form-inline" method="post">
+                        <input type="text" class="form-control articul" placeholder="Артикул">
+                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                            <select class="under-cat" name="categoty" class="form-control">
+                                <?php foreach ($underCat as $key => $value) { ?>
+                                    <option><?php echo $value["name"]; ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary change-under-prd">Изменить</button>
+                    </form>
+                    <div class="alert alert-danger" id="changeUnder">
+                        <strong>Ошибка! </strong> Заполните поля
+                    </div>
+
+                    <div class="alert alert-success" id="successChangeUnder">
+                        <strong>Ура! </strong> Вы изменили подкатегорию у товара
+                    </div>
                 </div>
                 <div class="add-cat">
                         <div class="title">
@@ -616,6 +676,8 @@
                         <div class="alert alert-success">
                           <strong>Ура! </strong> Категория успешно добавлена
                         </div>
+
+                        
 
                         <div class="alert alert-danger">
                           <strong>Ошибка! </strong> Заполните название категории

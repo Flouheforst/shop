@@ -92,12 +92,29 @@
 
 		\php\App::renderPages("all-product",[
 				"hitPrd" => $hitPrd,
-				"stock" => $stock,
 				"new" => $new,
 				"resCat" => $resCat,
 				"resUnder" => $resUnder,
 				"prdCat" => $prdCat
 			]);
+	});
+
+	$router->post("/changeUnder", function(){
+		if ($_SESSION["admin-auth"]) {
+			$articul = $_POST["articul"];
+			$underCat = $_POST["underCat"];
+
+			$product = new \php\model\product\Product();
+			$idPrd = $product->getIdOnArticul($articul);
+			$prdHasCat = new \php\model\has\ProductHasCategory();
+			$catId = $prdHasCat->getOnPrdId($idPrd);
+
+			$category = new \php\model\category\Category();
+			$res = $category->updateUnder($catId, $underCat);
+			
+			echo $res;
+
+		}
 	});
 
 	$router->get("/signAdmin", function(){
@@ -127,6 +144,9 @@
 			$idClient = $_POST['idClient'];
 			$client = new \php\model\client\Client();
 			$client->changeApprove($idClient, 1);
+
+			
+
 		}
 	});
 

@@ -102,6 +102,31 @@
 <div class="container" id="all-prd">
 	<div class="container">
 		<div class="row">
+            <?php if (!empty($hitPrd)) { ?>
+                <div class="col-lg-12 hit">
+                    <h2>Хиты продаж</h2>
+                    <?php foreach ($hitPrd as $key => $value) {?>
+                        <div class="col-lg-3" >
+                            <a href="#">
+                                <div class="product" data-id="<?php echo $value['id']; ?>">
+                                    <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
+                                    <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
+                                        <div class="img-wrap">
+                                            <img class="img-responsive" src="<?php echo $value['photo']; ?>">
+                                        </div>
+                                    <p class="price">Цена: <span><?php echo $value["price"]; ?><i class="fa fa-rub" aria-hidden="true"></i></span> </p>
+                                    <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
+                                    <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
+                                    <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
+                                    <?php if (isset($_SESSION["auth"])): ?>
+                                        <p class="add-kor"><a  href="">Добавить в корзину</a></p>
+                                    <?php endif ?>
+                                </div>
+                            </a>
+                        </div>
+                    <?php } ?>
+                </div>
+            <?php  } ?>
 			<?php foreach ($prdCat as $key => $value) {?>
                 <div class="col-lg-3" >
                     <a href="#">

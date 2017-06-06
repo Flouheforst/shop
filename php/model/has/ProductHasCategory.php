@@ -36,4 +36,9 @@
 
 			return $catPrd;
 		}
+
+		public function getOnPrdId($id){
+			$id = intval($id);
+			return $this->db->getOne("select category_id from $this->tableName where Product_id = ?i", $id);
+		}
 	} 

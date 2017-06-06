@@ -10,7 +10,7 @@ body, html{
 
 .main{
  	margin:50px 15px;
-    margin-top: 15%;
+  margin-top: 15%;
 }
 #statistic .product {
   cursor: pointer;
@@ -22,6 +22,13 @@ h1.title {
 	font-weight: 400; 
 }
 
+#category .change-under .under-cat {
+  height: 46px !important;
+}
+
+#category .change-under .articul {
+  width: 30%;
+}
 hr{
 	width: 10%;
 	color: #fff;
@@ -267,6 +274,11 @@ span.input-group-addon i {
 #category .add-cat .alert {
     margin-top: 10px;
 }
+
+
+
+
+
 
 
 .tree, .tree ul {
@@ -1136,4 +1148,44 @@ span.input-group-addon i {
   font-size: 16px;
   font-weight: 700;
   text-decoration: none;
+}
+
+
+
+#category .change-under input {
+    border-radius: 0px;
+    padding: 12px !important;
+}
+
+#category .change-under button {
+    background-color: #38a6a7;
+    color: white;
+    text-transform: uppercase;
+    padding: 12px 15px 12px 15px;
+    border-radius: 0px;
+        -webkit-box-shadow: 0px 3px 9px 0px rgba(0,0,0,.09);
+    -moz-box-shadow: 0px 3px 9px 0px rgba(0,0,0,.09);
+    box-shadow: 0px 3px 9px 0px rgba(0,0,0,.09);
+}
+
+
+#category .change-under button a{
+    color: white;
+    text-decoration: none;
+    -webkit-box-shadow: 0px 3px 9px 0px rgba(0,0,0,.09);
+    -moz-box-shadow: 0px 3px 9px 0px rgba(0,0,0,.09);
+    box-shadow: 0px 3px 9px 0px rgba(0,0,0,.09);
+    text-transform: uppercase;
+    padding: 12px 15px 12px 15px;
+} 
+#category .change-under button i {
+    padding-left: 5px;
+}
+#category .change-under p {
+    padding: 10px;
+    margin-top: 10px;
+}
+
+#category .change-under .alert {
+    margin-top: 10px;
 }

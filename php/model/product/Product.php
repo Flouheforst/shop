@@ -45,5 +45,9 @@
 					where id = ?i", $approve, $id);
 		}
 
+		public function getIdOnArticul($article) {
+			return $this->db->getOne("SELECT id from $this->tableName where vendor_code = ?s", $article);
+		}
+
 
 	} 
