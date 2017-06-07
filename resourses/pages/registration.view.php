@@ -32,6 +32,15 @@
 								</div>
 							</div>
 						</div>
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">Телефон</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+									<input type="text" class="form-control" name="tel"  placeholder="Введите Ф.И.О"/>
+								</div>
+							</div>
+						</div>
 						<?php if (\php\FlashPush::has("admin-auth")) { ?>
 							<div class="form-group">
 								<div class="alert alert-danger">

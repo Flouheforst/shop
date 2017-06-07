@@ -99,7 +99,7 @@
             </div>
         </div>
         
-
+        
         <!-- Modal -->
         <div class="modal fade" id="change-approve" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -272,31 +272,43 @@
                                     <input name="login" type="text" class="form-control inp-login" placeholder="Логин" data-item="login">
                                 </div>
                                 <div class="form-group">
+                                    <label>Логин</label>
                                     <p class="form-control-static login">Пример: Flouheforst</p>
                                 </div>
                                 <div class="form-group">
                                     <input name="pass" type="password" class="form-control inp-pass" placeholder="Пароль" data-item="pass">
                                 </div>
                                 <div class="form-group">
+                                    <label>Пароль</label>
                                     <p class="form-control-static pass">Пример: 12345qwe</p>
                                 </div>
                                 <div class="form-group">
                                     <input name="tel" type="text" class="form-control inp-tel" placeholder="Телефон" data-item="tel">
                                 </div>
                                 <div class="form-group">
+                                    <label>Телефон</label>
                                     <p class="form-control-static tel">Пример: 8-956-245-23-64</p>
                                 </div>
                                 <div class="form-group">
                                     <input name="adres" type="text" class="form-control inp-adres" placeholder="Адрес" data-item="adres">
                                 </div>
                                 <div class="form-group">
+                                    <label>Адрес</label>
                                     <p class="form-control-static adres">Пример: Мос. обл г.Чехов ул.Чехова д.200</p>
                                 </div>
                                 <div class="form-group">
                                     <input name="email" type="email" class="form-control inp-email" placeholder="Email" data-item="email">
                                 </div>
                                 <div class="form-group">
+                                    <label>Email</label>
                                     <p class="form-control-static email">Пример: some@mail.ru</p>
+                                </div>
+                                <div class="form-group">
+                                    <input name="fullName" type="text" class="form-control inp-fullName" placeholder="Ф.И.О" data-item="fullName">
+                                </div>
+                                <div class="form-group">
+                                    <label>Ф.И.О</label>
+                                    <p class="form-control-static fullName">Пример: Шипилов Борис Электронович</p>
                                 </div>
                                 <div class="form-group">
                                     <label>Добавьте фотографию</label>

@@ -10,5 +10,13 @@ function closeNav() {
 }
 
 $(document).ready(function(){
-
+	$(".add-basket").click(function(e){
+		e.preventDefault();
+		
+		var idPrd = $(this).data("id");
+		var price = $(this).data("price");
+		
+		document.getElementById("idProduct").value = idPrd;
+		document.getElementById("price").value = price;
+	});
 });

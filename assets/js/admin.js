@@ -526,6 +526,9 @@ $(document).ready(function(){
 			case "email":
 				$("#reg .form-group .email").text(text);
 			break;
+			case "fullName":
+				$("#reg .form-group .fullName").text(text);
+			break;
 		}
 	});
 

@@ -26,7 +26,7 @@
 		}
 
 		public function getOnApprove($approve, $quantity){
-			return $this->db->getAll("SELECT  $this->fields from $this->tableName where approve = ?s limit ?i", $approve, $quantity);
+			return $this->db->getAll("SELECT  id, price, photo, brand, vendor_code, dimensions, mark_car, description, approve, quantity, name, data from $this->tableName where approve = ?s limit ?i", $approve, $quantity);
 		}
 		public function changeApprove($prdCat, $approve){
 			foreach ($prdCat as $key => $value) {
@@ -54,5 +54,22 @@
 			return $this->db->getOne("SELECT id from $this->tableName where vendor_code = ?s", $article);
 		}
 
+		public function getQuantity($id){
+			$id = intval($id);
+			return $this->db->getOne("SELECT quantity from $this->tableName where id = ?i", $id);
+		}
 
+		public function multipay($id, $quant){
+			$id = intval($id);
+			$quant = intval($quant);
+			$this->db->query("UPDATE $this->tableName
+				SET quantity=quantity-?i
+				WHERE id= ?i", $quant, $id);
+			
+		}
+
+		public function getApprove($id){
+			$id = intval($id);
+			return $this->db->getOne("SELECT approve from $this->tableName where id = ?i", $id);
+		}
 	} 

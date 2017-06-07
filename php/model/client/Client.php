@@ -9,13 +9,14 @@
 		}
 
 		public function fields(){
-			return ["idclient", "email", "password", "full_name", "address", "date_birth", "date_regist", "approve"];
+			return ["idclient", "email", "password", "full_name", "address", "date_birth", "date_regist", "approve", "telephone"];
 		}
 
-		public function addClient($email, $password, $fullname){
+		public function addClient($email, $password, $fullname, $tel){
 			$approve = 0;
+			$data = date('d.m.Y');
 
-			$res = $this->db->query("INSERT into $this->tableName(email, password, full_name, approve) values(?s, ?s, ?s, ?i)", $email, $password, $fullname, $approve);
+			$res = $this->db->query("INSERT into $this->tableName(email, password, full_name, approve, telephone, date_regist) values(?s, ?s, ?s, ?i, ?s, ?s)", $email, $password, $fullname, $approve, $tel, $data);
 
 			if ($res) {
 				$result = $this->db->getAll("SELECT email, full_name, idclient FROM $this->tableName where email = ?s", $email);
@@ -31,7 +32,7 @@
 
 			foreach ($res as $key => $value) {
 				if ( password_verify($password, $value["password"]) && $email == $value["email"] && $value["approve"] == 0) {
-					$result = $this->db->getAll("SELECT email, full_name, idclient FROM $this->tableName where email = ?s", $email);
+					$result = $this->db->getAll("SELECT email, full_name, idclient, telephone FROM $this->tableName where email = ?s", $email);
 					$_SESSION["dataUser"] = $result;
 					$_SESSION["auth"] = true;
 				} else {

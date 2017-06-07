@@ -77,8 +77,6 @@
 				$product = new \php\model\product\Product();
 				$product->changeApprove($prdCat, "Удален");
 			}
-
-			
 		}
 
 		public function delUnder(){

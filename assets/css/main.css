@@ -926,3 +926,16 @@ body {
 #onCategory .product:hover .vendor_code {
   background-color: #cdcdcd;
 }
+
+#orderProduct .clouse-modal {
+  color: black !important;
+}
+
+
+#orderProduct #idProduct {
+  display: none;
+}
+
+#orderProduct #price {
+  display: none;
+}

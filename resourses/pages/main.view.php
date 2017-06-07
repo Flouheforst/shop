@@ -39,28 +39,33 @@
                                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                                   <div class="carousel-inner">
                                     <?php foreach ($new["newOne"] as $key => $value) { ?>
-                                        <div class="item active">
-                                            <a href="#"><img src="<?php echo $value["photo"]; ?>" class="img-responsive" alt="product 1"></a>
-                                            <h4><small><?php echo $value["name"]; ?></small></h4>                                        
-                                            <button class="btn btn-primary" type="button"><?php echo $value["price"]; ?> <i class="fa fa-rub" aria-hidden="true"></i></button>
-                                                <?php if (isset($_SESSION["auth"])) { ?>
-                                                    <button href="#" class="btn btn-default" type="button"><span class="glyphicon glyphicon-heart"></span> Добавить в корзину</button> 
-                                                <?php } ?>
-                                                  
-                                        </div><!-- End Item -->
+                                        <?php if ($value["quantity"] > 0){ ?>
+                                            <div class="item active">
+                                                <a href="#"><img src="<?php echo $value["photo"]; ?>" class="img-responsive" alt="product 1"></a>
+                                                <h4><small><?php echo $value["name"]; ?></small></h4>                                        
+                                                <button class="btn btn-primary" type="button"><?php echo $value["price"]; ?> <i class="fa fa-rub" aria-hidden="true"></i></button>
+                                                    <?php if (isset($_SESSION["auth"])) { ?>
+                                                        <button data-id="<?php echo $value["id"]; ?>" data-price="<?php echo $value["price"]; ?>" href="#" class="btn btn-default add-basket" data-toggle="modal" data-target="#orderProduct" type="button"><span class="glyphicon glyphicon-heart"></span> Добавить в корзину</button> 
+                                                    <?php } ?>
+                                                      
+                                            </div><!-- End Item -->
+                                        <?php } ?>
+                                        
                                     <?php } ?>
                                     
 
                                     <?php foreach ($new["newTwo"] as $key => $value) { ?>
-                                        <div class="item">
-                                            <a href="#"><img src="<?php echo $value["photo"]; ?>" class="img-responsive" alt="product 2"></a>
-                                            <h4><small><?php echo $value["name"]; ?></small></h4>                                        
-                                            <button class="btn btn-primary" type="button"><?php echo $value["price"]; ?> <i class="fa fa-rub" aria-hidden="true"></i></button>
-                                                <?php if (isset($_SESSION["auth"])) { ?>
-                                                    <button href="#" class="btn btn-default" type="button"><span class="glyphicon glyphicon-heart"></span> Добавить в корзину</button>   
-                                                <?php } ?>
-                                                 
-                                        </div><!-- End Item -->
+                                        <?php if ($value["quantity"] > 0){ ?>
+                                            <div class="item">
+                                                <a href="#"><img src="<?php echo $value["photo"]; ?>" class="img-responsive" alt="product 2"></a>
+                                                <h4><small><?php echo $value["name"]; ?></small></h4>                                        
+                                                <button class="btn btn-primary" type="button"><?php echo $value["price"]; ?> <i class="fa fa-rub" aria-hidden="true"></i></button>
+                                                    <?php if (isset($_SESSION["auth"])) { ?>
+                                                        <button data-id="<?php echo $value["id"]; ?>" data-price="<?php echo $value["price"]; ?>" href="#" class="btn btn-default add-basket" data-toggle="modal" data-target="#orderProduct" type="button"><span class="glyphicon glyphicon-heart"></span> Добавить в корзину</button>   
+                                                    <?php } ?>
+                                                     
+                                            </div><!-- End Item -->
+                                        <?php } ?>
                                     <?php } ?>
                                     
                                                                   
@@ -100,6 +105,56 @@
         </div><!-- /.nav-collapse -->
     </nav>
 </div>
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="orderProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLabel">Заказ товара</h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="http://localhost/shop/addBasketPrd">
+                    
+                    <div class="form-group">
+                        <label for="message-text" class="form-control-label">Метод заказа:</label>
+                        <select  class="form-control" name="method"> 
+                            <option>Доставка курьером</option>
+                            <option>Покупка в ближайшем магазине</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="form-control-label">Удаленность</label>
+                        <select  class="form-control" name="remoteness"> 
+                            <option>Москва</option>
+                            <option>Московская область</option>
+                            <option>Другое...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="form-control-label">Количество:</label>
+                        <input type="text" class="form-control" name="quantity">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="idProduct" name="id">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="price" id="price">
+                    </div>
+                    <button type="button" class="btn btn-secondary clouse-modal" data-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-primary">Оформить заказ</button>
+                </form>
+            </div>
+           
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
 <div class="container">
     <section id="hit">
          <div class="row">
@@ -118,24 +173,28 @@
                 </div>
             <?php } ?>
              <?php foreach ($hitPrd as $key => $value) {?>
-                <div class="col-lg-3" >
-                    <a href="#">
-                        <div class="product" data-id="<?php echo $value['id']; ?>">
-                            <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
-                            <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
-                                <div class="img-wrap">
-                                    <img class="img-responsive" src="<?php echo $value['photo']; ?>">
+                <?php if ($value["quantity"] > 0){ ?>
+                    <?php if ($value["quantity"] > 0){ ?>
+                        <div class="col-lg-3" >
+                            <a href="#">
+                                <div class="product" data-id="<?php echo $value['id']; ?>">
+                                    <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
+                                    <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
+                                        <div class="img-wrap">
+                                            <img class="img-responsive" src="<?php echo $value['photo']; ?>">
+                                        </div>
+                                    <p class="price">Цена: <span><?php echo $value["price"]; ?><i class="fa fa-rub" aria-hidden="true"></i></span> </p>
+                                    <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
+                                    <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
+                                    <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
+                                    <?php if (isset($_SESSION["auth"])): ?>
+                                        <p data-id="<?php echo $value["id"]; ?>" data-price="<?php echo $value["price"]; ?>" class="add-kor add-basket" data-toggle="modal" data-target="#orderProduct"><a  href="">Добавить в корзину</a></p>
+                                    <?php endif ?>
                                 </div>
-                            <p class="price">Цена: <span><?php echo $value["price"]; ?><i class="fa fa-rub" aria-hidden="true"></i></span> </p>
-                            <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
-                            <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
-                            <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
-                            <?php if (isset($_SESSION["auth"])): ?>
-                                <p class="add-kor"><a  href="">Добавить в корзину</a></p>
-                            <?php endif ?>
+                            </a>
                         </div>
-                    </a>
-                </div>
+                    <?php } ?>
+                <?php } ?>
             <?php } ?>
          </div>
     </section>
@@ -226,24 +285,26 @@
                     </div>
                 <?php } ?>
                 <?php foreach ($stock as $key => $value) {?>
-                    <div class="col-lg-3" >
-                        <a href="#">
-                            <div class="product" data-id="<?php echo $value['id']; ?>">
-                                <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
-                                <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
-                                    <div class="img-wrap">
-                                        <img class="img-responsive" src="<?php echo $value['photo']; ?>">
-                                    </div>
-                                <p class="price">Цена: <span><?php echo $value["price"]; ?><i class="fa fa-rub" aria-hidden="true"></i></span> </p>
-                                <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
-                                <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
-                                <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
-                                <?php if (isset($_SESSION["auth"])) {?>
-                                    <p class="add-kor"><a  href="">Добавить в корзину</a></p>
-                                <?php } ?>
-                            </div>
-                        </a>
-                    </div>
+                    <?php if ($value["quantity"] > 0){ ?>
+                        <div class="col-lg-3" >
+                            <a href="#">
+                                <div class="product" data-id="<?php echo $value['id']; ?>">
+                                    <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
+                                    <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
+                                        <div class="img-wrap">
+                                            <img class="img-responsive" src="<?php echo $value['photo']; ?>">
+                                        </div>
+                                    <p class="price">Цена: <span><?php echo $value["price"]; ?><i class="fa fa-rub" aria-hidden="true"></i></span> </p>
+                                    <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
+                                    <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
+                                    <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
+                                    <?php if (isset($_SESSION["auth"])) {?>
+                                        <p data-id="<?php echo $value["id"]; ?>" data-price="<?php echo $value["price"]; ?>" class="add-kor add-basket" data-toggle="modal" data-target="#orderProduct"><a  href="">Добавить в корзину</a></p>
+                                    <?php } ?>
+                                </div>
+                            </a>
+                        </div>
+                    <?php } ?>
                 <?php } ?>
              </div>
         </section>

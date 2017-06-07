@@ -8,6 +8,9 @@
 		$product = new \php\model\product\Product();
 		$productCategory = new \php\model\join\ProductCategory();
 
+		$order = new \php\model\order\Order();
+		$order->getCunt($_SESSION["dataUser"][0]["idclient"]);
+
 		$prdCat = $productCategory->getPrdCat();
 		$resCat = $defCat->getAll();
 		$resUnder = $defUnderCat->getAll();
@@ -144,6 +147,7 @@
 			$pass = $_POST["pass"];
 			$tel = $_POST["tel"];
 			$adres = $_POST["adres"];
+			$fullName = $_POST["fullName"];
 			$email = $_POST["email"];
 
 			$uploaddir = "assets/image/kurier/";
@@ -153,7 +157,7 @@
 				$passwordHash = password_hash($pass, PASSWORD_DEFAULT);
 
 				$provider = new \php\model\provider\Provider();
-				$res = $provider->addProvider($login, $passwordHash, $tel, $adres, $email, $uploadfile);
+				$res = $provider->addProvider($login, $passwordHash, $tel, $adres, $email, $uploadfile, $fullName);
 			}
 			
 
@@ -654,12 +658,23 @@
 	});
 
 	$router->get("/providerSign", function(){
-		echo "providerSign";
+		\php\App::renderPages("providerSign");
 	});
 
+	$router->post("/signProvider", "Provider:signProvider");
+
 	$router->get("/provider", function(){
-		echo "provider";
+		if ($_SESSION["auth-provider"]) {
+			\php\App::renderPages("provider");
+
+			$provider = new \php\model\provider\Provider();
+			
+		} else {
+			\php\App::redirect("shop/providerSign");
+		}
 	});
+
+	$router->post("/addBasketPrd", "User:addBasketPrd");
 
 	$router->get("/userSettings", function(){
 
