@@ -35,6 +35,35 @@
 
 	});
 
+	$router->get("/basket", function(){
+		if ($_SESSION["auth"]) {
+			$product = new \php\model\product\Product();
+			$order = new \php\model\order\Order();
+
+			$orderOnId = $order->getOnId($_SESSION["dataUser"][0]["idclient"]);
+
+			$newOne = $product->getOnApprove("Новинка", 1);
+			$newTwo = $product->getOnApprove("Новинка", 2);
+
+			$defCat = new \php\model\category\DefCategory();
+			$defUnderCat = new \php\model\category\UnderCat();
+			$resCat = $defCat->getAll();
+			$resUnder = $defUnderCat->getAll();
+
+			$new = [
+				"newOne" => $newOne,
+				"newTwo" => $newTwo
+			];
+
+			\php\App::renderPages("basket", [
+					"resCat" => $resCat,
+					"resUnder" => $resUnder,
+					"new" => $new,
+					"orderOnId" => $orderOnId
+				]);
+		}
+	});
+
 	$router->post("/search", function(){
 		$valueSearch = $_POST["search"];
 		if (!empty($valueSearch)) {
@@ -327,6 +356,72 @@
 			$objWriter->save('php://output');
 
 	});
+
+	$router->post("/excelBasket", function() use ($xls) {
+		$order = new \php\model\order\Order();
+		$orderOnId = $order->getOnId($_SESSION["dataUser"][0]["idclient"]);
+
+		// Устанавливаем индекс активного листа
+		$xls->setActiveSheetIndex(0);
+		// Получаем активный лист
+		$sheet = $xls->getActiveSheet();
+		// Подписываем лист
+		$sheet->setTitle('Корзина');
+
+		// Вставляем текст в ячейку A1
+		$sheet->setCellValue("A1", 'Корзина');
+		$sheet->getStyle('A1')->getFill()->setFillType(
+		    PHPExcel_Style_Fill::FILL_SOLID);
+		$sheet->getStyle('A1')->getFill()->getStartColor()->setRGB('EEEEEE');
+
+		// Объединяем ячейки
+		$sheet->mergeCells('A1:H1');
+
+		// Выравнивание текста
+		$sheet->getStyle('A1')->getAlignment()->setHorizontal(
+		    PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+		
+		$sheet->getColumnDimension('A')->setWidth(20);
+		$sheet->getColumnDimension('B')->setWidth(20);
+		$sheet->getColumnDimension('C')->setWidth(20);
+		$sheet->getColumnDimension('D')->setWidth(20);
+		$sheet->getColumnDimension('E')->setWidth(20);
+		$sheet->getColumnDimension('F')->setWidth(20);
+		$sheet->getColumnDimension('G')->setWidth(20);
+		$sheet->getColumnDimension('H')->setWidth(20);
+
+		$i = 3;
+		$j = 0;
+		foreach ($orderOnId as $key => $value) {
+			$sheet->setCellValueByColumnAndRow($j, $i, $value["id"]);
+			$sheet->setCellValueByColumnAndRow($j, $i + 1, $value["date_order"]);
+			$sheet->setCellValueByColumnAndRow($j, $i + 2, $value["price"]);
+			$sheet->setCellValueByColumnAndRow($j, $i + 3, $value["payment_method"]);
+			$sheet->setCellValueByColumnAndRow($j, $i + 4, $value["quantity"]);
+			$sheet->setCellValueByColumnAndRow($j, $i + 5, $value["remoteness"]);
+			$sheet->setCellValueByColumnAndRow($j, $i + 6, $value["amount"]);
+
+			// Применяем выравнивание
+			$sheet->getStyleByColumnAndRow($i, $j)->getAlignment()->
+		           setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+		           $j++;
+		}
+
+		header ( "Expires: Mon, 1 Apr 1974 05:00:00 GMT" );
+		header ( "Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT" );
+		header ( "Cache-Control: no-cache, must-revalidate" );
+		header ( "Pragma: no-cache" );
+		header ( "Content-type: application/vnd.ms-excel charset=utf-8" );
+		header ( "Content-Disposition: attachment; filename=Basket.xls" );
+
+		$objWriter = new PHPExcel_Writer_Excel5($xls);
+		$objWriter->save('php://output');
+
+
+	});
+
 	$router->get("/admin", function(){
 		if ($_SESSION["admin-auth"]) {
 			$defCat = new \php\model\category\DefCategory();

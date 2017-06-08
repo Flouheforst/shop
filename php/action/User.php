@@ -75,19 +75,22 @@
 
 				if ( ($quantityPrd - $quantity) >= 0 ) {
 					$order = new \php\model\order\Order();
-
+					$amount = $price * $quantity;
+					$amount = intval($amount);
 					if ($method === "Доставка курьером") {
 						$approve = 0;
-						$resOrder = $order->add($price, $quantity, $method, $_SESSION["dataUser"][0]["idclient"], $remoteness, $approve, $approvePrd);
+						$resOrder = $order->add($price, $quantity, $method, $_SESSION["dataUser"][0]["idclient"], $remoteness, $approve, $approvePrd, $amount);
 					} elseif ($method === "Покупка в ближайшем магазине") {
 						$approve = 1;
-						$resOrder = $order->add($price, $quantity, $method, $_SESSION["dataUser"][0]["idclient"], $remoteness, $approve, $approvePrd);
+						$resOrder = $order->add($price, $quantity, $method, $_SESSION["dataUser"][0]["idclient"], $remoteness, $approve, $approvePrd, $amount);
 					}
 					
 					$idOrder = $order->get($price, $quantity, $method, $_SESSION["dataUser"][0]["idclient"], $remoteness);
+
+					$idOrder = array_pop($idOrder);
 					if ($resOrder) {
 						$prdHasOrder = new \php\model\has\ProductHasOrder();
-						$res = $prdHasOrder->add($idPrd, $idOrder);
+						$res = $prdHasOrder->add($idPrd, $idOrder["id"]);
 						$product->multipay($idPrd, $quantity);
 						if ($res) {
 							\php\App::redirect("shop/");

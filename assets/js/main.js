@@ -19,4 +19,6 @@ $(document).ready(function(){
 		document.getElementById("idProduct").value = idPrd;
 		document.getElementById("price").value = price;
 	});
+
+	
 });

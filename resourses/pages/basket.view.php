@@ -105,6 +105,9 @@
         </div><!-- /.nav-collapse -->
     </nav>
 </div>
+<!-- Button trigger modal -->
+
+<!-- Modal -->
 <div class="modal fade" id="orderProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -150,33 +153,56 @@
         </div>
     </div>
 </div>
+<!-- End Modal -->
 
-<div class="container" id="onCategory">
+
+
+<div class="container" id="basket">
     <div class="row">
-        <?php foreach ($res as $key => $value) {?>
-            <?php if ($value["quantity"] > 0) { ?>
-                <div class="col-lg-3" >
-                    <a href="#">
-                        <div class="product" data-id="<?php echo $value['id']; ?>">
-                            <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
-                            <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
-                                <div class="img-wrap">
-                                    <img class="img-responsive" src="<?php echo $value['photo']; ?>">
-                                </div>
-                            <p class="price">Цена: <span><?php echo $value["price"]; ?><i class="fa fa-rub" aria-hidden="true"></i></span> </p>
-                            <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
-                            <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
-                            <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
-                            <?php if (isset($_SESSION["auth"])) {?>
-                                 <p data-id="<?php echo $value["id"]; ?>" data-price="<?php echo $value["price"]; ?>" class="add-kor add-basket" data-toggle="modal" data-target="#orderProduct"><a  href="">Добавить в корзину</a></p>
-                            <?php } ?>
-                        </div>
-                    </a>
-                </div>
+        <div class="col-lg-12">
+            <h2>Корзина</h2>
+            <?php if (!empty($orderOnId)) { ?>
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Дата заказа</th>
+                            <th>Цена</th>
+                            <th>Метод оплаты</th>
+                            <th>Количество</th>
+                            <th>Удаленность</th>
+                            <th>Сумма</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="basket">
+                        <?php foreach ($orderOnId as $key => $value) { ?>
+                            <tr class="cart-item js-cart-item">
+                                <td><?php echo $value["date_order"]; ?></td>
+                                <td><?php echo $value["price"]; ?></td>
+                                <td><?php echo $value["payment_method"]; ?></td>
+                                <td>
+                                    <?php echo $value["quantity"]; ?>
+                                </td>
+                                <td><?php echo $value["remoteness"]; ?></td>
+                                <td class="item"><span class="js-summa"><?php echo $value["amount"]; ?></span> руб.</td>
+                                <td>
+                                    <span class="cart-item__btn-remove js-remove-from-cart" title="Удалить из корзины" data-id="1">
+                                        <span class="glyphicon glyphicon-remove" data-id="<?php echo $value['id']; ?>"></span>                                
+                                    </span>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+                    Итог: <span class="result"></span>
+
             <?php } ?>
-        <?php } ?>
+            <form action="http://localhost/shop/excelBasket" method="post" class="form-feedback">
+                <button class="btn btn-primary exel-report">Отчет в Excel</button>
+            </form>
+        </div>
     </div>
-    <section id="footer">
+     <section id="footer">
         <div class="row">
             <div class="col-lg-4 avto">
                 <h2>Авто</h2>
@@ -250,4 +276,5 @@
         </div>
     </section>
 </div>
-<?php  \php\App::renderTemplate("footer")?>
+
+<?php  \php\App::renderTemplate("basket-footer")?>
