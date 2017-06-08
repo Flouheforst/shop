@@ -160,7 +160,7 @@
 <div class="container" id="basket">
     <div class="row">
         <div class="col-lg-12">
-            <h2>Корзина</h2>
+            <h2 class="basketHead">Корзина</h2>
             <?php if (!empty($orderOnId)) { ?>
                 <table class="table table-hover table-bordered">
                     <thead>
@@ -185,9 +185,9 @@
                                 </td>
                                 <td><?php echo $value["remoteness"]; ?></td>
                                 <td class="item"><span class="js-summa"><?php echo $value["amount"]; ?></span> руб.</td>
-                                <td>
-                                    <span class="cart-item__btn-remove js-remove-from-cart" title="Удалить из корзины" data-id="1">
-                                        <span class="glyphicon glyphicon-remove" data-id="<?php echo $value['id']; ?>"></span>                                
+                                <td class="remove-itemBasket" data-id="<?php echo $value['id']; ?>">
+                                    <span class="cart-item__btn-remove " title="Удалить из корзины" data-id="1">
+                                        <span class="glyphicon glyphicon-remove" ></span>                                
                                     </span>
                                 </td>
                             </tr>

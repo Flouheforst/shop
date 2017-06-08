@@ -939,3 +939,12 @@ body {
 #orderProduct #price {
   display: none;
 }
+
+.remove-itemBasket  {
+  cursor: pointer;
+}
+#basket .basketHead {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 40px;
+}

@@ -14,7 +14,7 @@
                     } ?></a>
                         <ul class="dropdown-menu">
                             <li class="profile-li"><a class="profile-links" href="">Личный кабинет</a></li>
-                            <li class="profile-li"><a class="profile-links" href="">Корзина</a></li>
+                            <li class="profile-li"><a class="profile-links" href="http://localhost/shop/basket">Корзина</a></li>
                             <li class="profile-li"><a class="profile-links" href="http://localhost/shop/loguotUser">Выйти</a></li>
                         </ul>
                     </li>

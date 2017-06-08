@@ -778,3 +778,11 @@
 	$router->get("/userLogout", function(){
 
 	});
+
+	$router->post("/delItemBasket", function(){
+		$id = $_POST["id"];
+		$approve = 1;
+		$order = new \php\model\order\Order();
+		$order->changeApprove($id, $approve);
+		
+	});

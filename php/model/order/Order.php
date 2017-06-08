@@ -29,6 +29,13 @@
 
 		public function getOnId($id){
 			$id = intval($id);
-			return $this->db->getAll("SELECT id, date_order, price, payment_method, quantity, remoteness, amount from $this->tableName where client_idclient = ?i", $id);
+			return $this->db->getAll("SELECT id, date_order, price, payment_method, quantity, remoteness, amount from $this->tableName where client_idclient = ?i and isApprove = 0", $id);
+		}
+
+		public function changeApprove($id, $approve){
+			$id = intval($id);
+			$this->db->query("UPDATE shop.`order` 
+				set isApprove = ?i
+				where id = ?i", $approve, $id);
 		}
 	} 
