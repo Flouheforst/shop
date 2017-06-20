@@ -161,10 +161,13 @@
     <div class="row">
         <div class="col-lg-12">
             <h2 class="basketHead">Корзина</h2>
-            <?php if (!empty($orderOnId)) { ?>
+            <?php if (!empty($basket)) { ?>
                 <table class="table table-hover table-bordered">
                     <thead>
                         <tr>
+                            <th>Бренд</th>
+                            <th>Название</th>
+                            <th>Артикул</th>
                             <th>Дата заказа</th>
                             <th>Цена</th>
                             <th>Метод оплаты</th>
@@ -175,8 +178,11 @@
                         </tr>
                     </thead>
                     <tbody id="basket">
-                        <?php foreach ($orderOnId as $key => $value) { ?>
+                        <?php foreach ($basket as $key => $value) { ?>
                             <tr class="cart-item js-cart-item">
+                                <td><?php echo $value["brand"]; ?></td>
+                                <td><?php echo $value["name"]; ?></td>
+                                <td><?php echo $value["vendor_code"]; ?></td>
                                 <td><?php echo $value["date_order"]; ?></td>
                                 <td><?php echo $value["price"]; ?></td>
                                 <td><?php echo $value["payment_method"]; ?></td>

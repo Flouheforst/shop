@@ -54,4 +54,21 @@
 					SET approve = ?s
 					where idclient = ?i", $approve, $id);
 		}
+
+		public function getOnId($id){
+			$client = [];
+
+			foreach ($id as $key => $value) {
+				$client[$key] = $this->db->getRow("SELECT telephone from $this->tableName where idclient = ?s", $value);
+			}
+
+			return $client;
+		}
+
+		public function change($email, $pass, $full_name, $addres, $data, $tel){
+			echo "string";
+			$this->db->query("UPDATE $this->tableName
+					set email = ?s, password = ?s, full_name = ?s, address = ?s, date_regist = ?s, telephone  = ?s
+					WHERE email = ?s", $email, $pass, $full_name, $addres, $data, $tel, $email);
+		}
 	} 

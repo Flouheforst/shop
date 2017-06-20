@@ -59,46 +59,52 @@
 		}
 
 		public function addBasketPrd(){
+			
 			if (!empty($_POST["id"]) && !empty($_POST["quantity"]) && !empty($_POST["method"]) && !empty($_POST["price"])  && !empty($_POST["remoteness"]) ) {
-				$idPrd = $_POST["id"];
-				$price = $_POST["price"];
-				$quantity = $_POST["quantity"];
-				$method = $_POST["method"];
-				$remoteness = $_POST["remoteness"];
-				
-				
-				$quantity = intval($quantity);
+				if ( intval($_POST["quantity"]) == $_POST["quantity"] && $_POST["quantity"] > 0) {
 
-				$product = new \php\model\product\Product();
-				$quantityPrd = $product->getQuantity($idPrd);
-				$approvePrd = $product->getApprove($idPrd);
+					$idPrd = $_POST["id"];
+					$price = $_POST["price"];
+					$quantity = $_POST["quantity"];
+					$method = $_POST["method"];
+					$remoteness = $_POST["remoteness"];
 
-				if ( ($quantityPrd - $quantity) >= 0 ) {
-					$order = new \php\model\order\Order();
-					$amount = $price * $quantity;
-					$amount = intval($amount);
-					if ($method === "Доставка курьером") {
-						$approve = 0;
-						$resOrder = $order->add($price, $quantity, $method, $_SESSION["dataUser"][0]["idclient"], $remoteness, $approve, $approvePrd, $amount);
-					} elseif ($method === "Покупка в ближайшем магазине") {
-						$approve = 1;
-						$resOrder = $order->add($price, $quantity, $method, $_SESSION["dataUser"][0]["idclient"], $remoteness, $approve, $approvePrd, $amount);
-					}
-					
-					$idOrder = $order->get($price, $quantity, $method, $_SESSION["dataUser"][0]["idclient"], $remoteness);
+					$quantity = intval($quantity);
 
-					$idOrder = array_pop($idOrder);
-					if ($resOrder) {
-						$prdHasOrder = new \php\model\has\ProductHasOrder();
-						$res = $prdHasOrder->add($idPrd, $idOrder["id"]);
-						$product->multipay($idPrd, $quantity);
-						if ($res) {
-							\php\App::redirect("shop/");
+					$product = new \php\model\product\Product();
+					$quantityPrd = $product->getQuantity($idPrd);
+					$approvePrd = $product->getApprove($idPrd);
+
+					if ( ($quantityPrd - $quantity) >= 0 ) {
+						$order = new \php\model\order\Order();
+						$amount = $price * $quantity;
+						$amount = intval($amount);
+						if ($method === "Доставка курьером") {
+							$approve = 0;
+							$resOrder = $order->add($price, $quantity, $method, $_SESSION["dataUser"][0]["idclient"], $remoteness, $approve, $approvePrd, $amount);
+						} elseif ($method === "Покупка в ближайшем магазине") {
+							$approve = 1;
+							$resOrder = $order->add($price, $quantity, $method, $_SESSION["dataUser"][0]["idclient"], $remoteness, $approve, $approvePrd, $amount);
 						}
+						
+						$idOrder = $order->get($price, $quantity, $method, $_SESSION["dataUser"][0]["idclient"], $remoteness);
+
+						$idOrder = array_pop($idOrder);
+						if ($resOrder) {
+							$prdHasOrder = new \php\model\has\ProductHasOrder();
+							$res = $prdHasOrder->add($idPrd, $idOrder["id"]);
+							$product->multipay($idPrd, $quantity);
+							if ($res) {
+								\php\App::redirect("shop/");
+							}
+						}
+					} else {
+						\php\App::redirect("shop/");
+						\php\FlashPush::add("quntity-basket", "Такого количества товара нету на складе");
 					}
 				} else {
+					\php\FlashPush::add("quntity-basket", "В поле количество нельзя указывать буквы");
 					\php\App::redirect("shop/");
-					\php\FlashPush::add("quntity-basket", "Такого количества товара нету на складе");
 				}
 			} else {
 				\php\App::redirect("shop/");

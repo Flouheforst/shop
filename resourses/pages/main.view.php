@@ -7,10 +7,11 @@
         <span class="sidenav-heading">Авто</span>
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
     </div>
-    <a href="">Link</a>
-    <a href="">Link</a>
-    <a href="">Link</a>
-    <a href="">Link</a>
+    <a href="http://localhost/shop/help">Помощь</a>
+    <a href="http://localhost/shop/feedback">Обратная связь</a>
+    <a href="http://localhost/shop/pravila-vozvrata">Правила возврата</a>
+    <a href="http://localhost/shop/shares">Акции</a>
+    <a href="http://localhost/shop/dostavka">Доставка</a>
 </div>
 <div class="container" id="drop-nav">
     <nav class="navbar navbar-default drop-nav">
@@ -157,8 +158,34 @@
 
 <div class="container">
     <section id="hit">
-         <div class="row">
-            <?php if ( !empty($hitPrd) ){ ?>
+        <div class="row">
+            <div class="col-lg-12 form-err">
+                <?php if ( \php\FlashPush::has("quntity-basket") ) { ?>
+                    <div class="form-group">
+                        <div class="alert alert-danger">
+                          <strong>Ошибка! </strong><?php echo \php\FlashPush::get("quntity-basket"); ?>
+                        </div>
+                    </div>
+                <?php } ?>
+
+                <?php if (\php\FlashPush::has("quntity-basket")) { ?>
+                    <div class="form-group">
+                        <div class="alert alert-danger">
+                          <strong>Ошибка! </strong><?php echo \php\FlashPush::get("quntity-basket"); ?>
+                        </div>
+                    </div>
+                <?php } ?>
+
+                <?php if (\php\FlashPush::has("basket")) { ?>
+                    <div class="form-group">
+                        <div class="alert alert-danger">
+                          <strong>Ошибка! </strong><?php echo \php\FlashPush::get("basket"); ?>
+                        </div>
+                    </div>
+                <?php } ?>
+                  
+            </div>
+            <?php if ( !empty($hitPrd)){ ?>
                 <div class="header-hit">
                     <div class="col-lg-4 img1">
                         <img src="assets/image/arrow.jpg">
@@ -175,15 +202,17 @@
              <?php foreach ($hitPrd as $key => $value) {?>
                 <?php if ($value["quantity"] > 0){ ?>
                     <?php if ($value["quantity"] > 0){ ?>
-                        <div class="col-lg-3" >
-                            <a href="#">
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <a href="http://localhost/shop/prd?product-id=<?php echo $value['id']; ?>&article=<?php echo $value['vendor_code']; ?>">
                                 <div class="product" data-id="<?php echo $value['id']; ?>">
                                     <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
-                                    <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
+                                    <a href="http://localhost/shop/prd?product-id=<?php echo $value['id']; ?>&article=<?php echo $value['vendor_code']; ?>"><p class="name">Название: <?php echo $value["name"]; ?></p></a>
+                                    <a href="http://localhost/shop/prd?product-id=<?php echo $value['id']; ?>&article=<?php echo $value['vendor_code']; ?>">
                                         <div class="img-wrap">
                                             <img class="img-responsive" src="<?php echo $value['photo']; ?>">
                                         </div>
-                                    <p class="price">Цена: <span><?php echo $value["price"]; ?><i class="fa fa-rub" aria-hidden="true"></i></span> </p>
+                                    </a>
+                                    <p class="price">Цена: <span><?php echo $value["price"]; ?><i class="fa fa-rub" aria-hidden="true"></i></span></p>
                                     <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
                                     <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
                                     <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
@@ -286,7 +315,7 @@
                 <?php } ?>
                 <?php foreach ($stock as $key => $value) {?>
                     <?php if ($value["quantity"] > 0){ ?>
-                        <div class="col-lg-3" >
+                        <div class="col-lg-3 col-md-3 col-sm-6">
                             <a href="#">
                                 <div class="product" data-id="<?php echo $value['id']; ?>">
                                     <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
@@ -360,7 +389,7 @@
     </section>
     <section id="footer">
         <div class="row">
-            <div class="col-lg-4 avto">
+            <div class="col-lg-4 col-md-4 col-sm-4 avto">
                 <h2>Авто</h2>
                 <ul>
                     <li class=""><a href="http://localhost/shop/feedback">Обратная связь</a></li>
@@ -371,7 +400,7 @@
                 </ul>
             </div>
             
-            <div class="col-lg-4 product">
+            <div class="col-lg-4 col-md-4 col-sm-4 product">
                 <h2>Каталог товаров</h2>
                 <ul>
                     <?php foreach ($resCat as $key => $value) { ?>
@@ -385,7 +414,7 @@
                 </ul>
             </div>
 
-            <div class="col-lg-4 personal-aria">
+            <div class="col-lg-4 col-md-4 col-sm-4 personal-aria">
                 <h2>Личный кабинет</h2>
                 <ul>
                     <li class=""><a class="" href="http://localhost/shop/signUser">Войти</a></li>
@@ -396,7 +425,7 @@
     </section>
     <section id="under-footer">
         <div class="row">
-            <div class="col-lg-4 text">
+            <div class="col-lg-4 col-md-7 col-sm-7 text">
                 <p>Интернет-магазин запчастей для иномарок.
                     Автозапчасти в наличии и под заказ.
                     <p>
@@ -404,7 +433,7 @@
                     </p>
                 </p>
             </div>
-            <div class="col-lg-4 social">
+            <div class="col-lg-4 col-md-5 col-sm-5 social">
                 Присоединяйтесь! Мы в соцсетях: 
                 <a href="https://www.facebook.com">
                     <img src="assets/image/social-button-facebook.png">

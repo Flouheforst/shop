@@ -26,7 +26,7 @@
 		}
 
 		public function getOnApprove($approve, $quantity){
-			return $this->db->getAll("SELECT  id, price, photo, brand, vendor_code, dimensions, mark_car, description, approve, quantity, name, data from $this->tableName where approve = ?s limit ?i", $approve, $quantity);
+			return $this->db->getAll("SELECT  id, price, photo, brand, vendor_code, dimensions, mark_car, description, approve, quantity, name, data from $this->tableName where approve = ?s and quantity > 0 limit ?i", $approve, $quantity);
 		}
 		public function changeApprove($prdCat, $approve){
 			foreach ($prdCat as $key => $value) {
@@ -71,5 +71,28 @@
 		public function getApprove($id){
 			$id = intval($id);
 			return $this->db->getOne("SELECT approve from $this->tableName where id = ?i", $id);
+		}
+
+		public function getOnIdHas($onPrdOrder){
+			$product = [];
+
+			foreach ($onPrdOrder as $key => $value) {
+				$product[$key] = $this->db->getRow("SELECT vendor_code, brand, mark_car, name FROM $this->tableName where id = ?s", $value);
+			}
+			
+			return $product;
+		}
+
+		public function updateQuantiy($idPrd, $quantity){
+			$idPrd = intval($idPrd);
+			$this->db->query("UPDATE $this->tableName
+				SET quantity= quantity + ?s
+				WHERE id= ?i", $quantity, $idPrd
+				);
+		}
+
+		public function getPrd($id, $article){
+			$id = intval($id);
+			return $this->db->getRow("SELECT * from $this->tableName where id = ?i and vendor_code = ?s", $id, $article);
 		}
 	} 

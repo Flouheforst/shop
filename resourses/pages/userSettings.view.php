@@ -150,104 +150,177 @@
         </div>
     </div>
 </div>
-
-<div class="container" id="onCategory">
+<div class="container" id="settings">
     <div class="row">
-        <?php foreach ($res as $key => $value) {?>
-            <?php if ($value["quantity"] > 0) { ?>
-                <div class="col-lg-3 item-category">
-                    <a href="#">
-                        <div class="product" data-id="<?php echo $value['id']; ?>">
-                            <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
-                            <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
-                                <div class="img-wrap">
-                                    <img class="img-responsive" src="<?php echo $value['photo']; ?>">
-                                </div>
-                            <p class="price">Цена: <span><?php echo $value["price"]; ?><i class="fa fa-rub" aria-hidden="true"></i></span> </p>
-                            <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
-                            <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
-                            <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
-                            <?php if (isset($_SESSION["auth"])) {?>
-                                 <p data-id="<?php echo $value["id"]; ?>" data-price="<?php echo $value["price"]; ?>" class="add-kor add-basket" data-toggle="modal" data-target="#orderProduct"><a  href="">Добавить в корзину</a></p>
-                            <?php } ?>
-                        </div>
-                    </a>
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-12 ">
+                    <ul class="nav nav-pills">
+                        <li class="data-user active"><a href="">Личные данные</a></li>
+                        <li class="basket"><a href="">Доставки</a></li>
+                    </ul>
                 </div>
-            <?php } ?>
-        <?php } ?>
-    </div>
-    <section id="footer">
-        <div class="row">
-            <div class="col-lg-4 avto">
-                <h2>Авто</h2>
-                <ul>
-                    <li class=""><a href="http://localhost/shop/feedback">Обратная связь</a></li>
-                    <li class=""><a href="http://localhost/shop/pravila-vozvrata">Правила возврата</a></li>
-                    <li class=""><a href="http://localhost/shop/shares">Акции</a></li>
-                    <li class=""><a href="http://localhost/shop/dostavka">Доставка</a></li>
-                    <li class=""><a href="http://localhost/shop/help">Помощь</a></li>
-                </ul>
-            </div>
-            
-            <div class="col-lg-4 product">
-                <h2>Каталог товаров</h2>
-                <ul>
-                    <?php foreach ($resCat as $key => $value) { ?>
-                        <li class="header"> <a href=""><?php echo $value["name"]; ?></a> </li>
-                        <?php foreach ($resUnder as $k => $val) { ?>
-                            <?php if ($value["id"] == $val["def_category_id"]) { ?>
-                                <li> <a href="http://localhost/shop/product?product-name=<?php echo $val['name']; ?>">  <?php echo $val["name"]; ?> </a></li>
-                            <?php } ?>
-                        <?php } ?>
+                <div class="col-lg-4 change" id="data-user">
+                    <?php if (\php\FlashPush::has("user-input") ) { ?>
+                        <div class="alert alert-danger" id="changeUnder">
+                            <strong>Ошибка! </strong> <?php echo \php\FlashPush::get("user-input"); ?>
+                        </div>
                     <?php } ?>
-                </ul>
+                    <?php if (\php\FlashPush::has("tel") ) { ?>
+                        <div class="alert alert-danger" id="changeUnder">
+                            <strong>Ошибка! </strong> <?php echo \php\FlashPush::get("tel"); ?>
+                        </div>
+                    <?php } ?>
+                    
+                    <h2>Личные данные</h2>
+                    <form method="post" action="http://localhost/shop/changeUser" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input name="email" type="email" class="form-control inp-login" placeholder="Email">
+                        </div>
+                            <div class="form-group">
+                            <label>Пароль</label>
+                            <input name="pass" type="password" class="form-control inp-login" placeholder="Пароль">
+                        </div>
+                        <div class="form-group">
+                            <label>Ф.И.О</label>
+                            <input name="full_name" type="text" class="form-control inp-login" placeholder="Ф.И.О">
+                        </div>
+                        <div class="form-group">
+                            <label>Адрес</label>
+                            <input name="addres" type="text" class="form-control inp-login" placeholder="Адрес">
+                            <small class="form-text text-muted">Необязательное поле</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Дата рождения</label>
+                            <input name="data" type="date" class="form-control inp-login" placeholder="Дата рождения">
+                            <small class="form-text text-muted">Необязательное поле</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Телефон</label>
+                            <input name="tel" type="text" class="form-control inp-login" placeholder="Телефон">
+                        </div>
+                        <button type="submit" class="btn btn-default " id="btn-reg">Изменить</button>
+                    </form>
+                </div>
+                <div class="col-lg-12" id="basket">
+                    <?php if (!empty($basket)){ ?>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Бренд</th>
+                                <th>Название</th>
+                                <th>Артикул</th>
+                                <th>Дата заказа</th>
+                                <th>Цена</th>
+                                <th>Метод оплаты</th>
+                                <th>Количество</th>
+                                <th>Удаленность</th>
+                                <th>Сумма</th>
+                            </tr>
+                        </thead>
+                        <tbody id="basket">
+                            
+                                <?php foreach ($basket as $key => $value) { ?>
+                                    <tr class="cart-item js-cart-item">
+                                        <td><?php echo $value["brand"]; ?></td>
+                                        <td><?php echo $value["name"]; ?></td>
+                                        <td><?php echo $value["vendor_code"]; ?></td>
+                                        <td><?php echo $value["date_order"]; ?></td>
+                                        <td><?php echo $value["price"]; ?></td>
+                                        <td><?php echo $value["payment_method"]; ?></td>
+                                        <td>
+                                            <?php echo $value["quantity"]; ?>
+                                        </td>
+                                        <td><?php echo $value["remoteness"]; ?></td>
+                                        <td class="item"><span class="js-summa"><?php echo $value["amount"]; ?></span> руб.</td>
+                                    
+                                    </tr>
+                                <?php } ?>
+                            
+                        </tbody>
+                    </table>
+                    Итог: <span class="result"></span>
+                    <?php } else {?>
+                        <h2 class="empty-basket">Корзина пуста</h2>
+                    <?php } ?>
+                </div>
             </div>
+            <section id="footer">
+                <div class="row">
+                    <div class="col-lg-4 avto">
+                        <h2>Авто</h2>
+                        <ul>
+                            <li class=""><a href="http://localhost/shop/feedback">Обратная связь</a></li>
+                            <li class=""><a href="http://localhost/shop/pravila-vozvrata">Правила возврата</a></li>
+                            <li class=""><a href="http://localhost/shop/shares">Акции</a></li>
+                            <li class=""><a href="http://localhost/shop/dostavka">Доставка</a></li>
+                            <li class=""><a href="http://localhost/shop/help">Помощь</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="col-lg-4 product">
+                        <h2>Каталог товаров</h2>
+                        <ul>
+                            <?php foreach ($resCat as $key => $value) { ?>
+                                <li class="header"> <a href=""><?php echo $value["name"]; ?></a> </li>
+                                <?php foreach ($resUnder as $k => $val) { ?>
+                                    <?php if ($value["id"] == $val["def_category_id"]) { ?>
+                                        <li> <a href="http://localhost/shop/product?product-name=<?php echo $val['name']; ?>">  <?php echo $val["name"]; ?> </a></li>
+                                    <?php } ?>
+                                <?php } ?>
+                            <?php } ?>
+                        </ul>
+                    </div>
 
-            <div class="col-lg-4 personal-aria">
-                <h2>Личный кабинет</h2>
-                <ul>
-                    <li class=""><a class="" href="http://localhost/shop/signUser">Войти</a></li>
-                    <li class=""><a class="" href="http://localhost/shop/regUser">Регистрация</a></li>
-                </ul>
-            </div>
+                    <div class="col-lg-4 personal-aria">
+                        <h2>Личный кабинет</h2>
+                        <ul>
+                            <li class=""><a class="" href="http://localhost/shop/signUser">Войти</a></li>
+                            <li class=""><a class="" href="http://localhost/shop/regUser">Регистрация</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            <section id="under-footer">
+                <div class="row">
+                    <div class="col-lg-4 text">
+                        <p>Интернет-магазин запчастей для иномарок.
+                            Автозапчасти в наличии и под заказ.
+                            <p>
+                                <span>© 2017 Avto - Все права защищены.</span>
+                            </p>
+                        </p>
+                    </div>
+                    <div class="col-lg-4 social">
+                        Присоединяйтесь! Мы в соцсетях: 
+                        <a href="https://www.facebook.com">
+                            <img src="assets/image/social-button-facebook.png">
+                        </a>                
+                        <a href="https://www.vk.com">
+                            <img src="assets/image/social-button-vkontakte.png">
+                        </a>
+                        <a href="https://ok.ru/">
+                            <img src="assets/image/social-button-odnoklassniki.png">
+                        </a>
+                    </div>
+                    <div class="col-lg-4 bank-bank">
+                        <a href="http://localhost/shop/oplata">
+                            <img src="assets/image/visa2.png">
+                        </a>
+                        <a href="http://localhost/shop/oplata">
+                            <img src="assets/image/mastercard2.png">
+                        </a>
+                        <a href="http://localhost/shop/oplata">
+                            <img src="assets/image/mir3.png">
+                        </a>
+                        
+                        <p><a href="http://localhost/shop">Интернет-магазин автозапчастей для иномарок.</a></p>
+                    </div>
+                </div>
+            </section>
         </div>
-    </section>
-    <section id="under-footer">
-        <div class="row">
-            <div class="col-lg-4 text">
-                <p>Интернет-магазин запчастей для иномарок.
-                    Автозапчасти в наличии и под заказ.
-                    <p>
-                        <span>© 2017 Avto - Все права защищены.</span>
-                    </p>
-                </p>
-            </div>
-            <div class="col-lg-4 social">
-                Присоединяйтесь! Мы в соцсетях: 
-                <a href="https://www.facebook.com">
-                    <img src="assets/image/social-button-facebook.png">
-                </a>                
-                <a href="https://www.vk.com">
-                    <img src="assets/image/social-button-vkontakte.png">
-                </a>
-                <a href="https://ok.ru/">
-                    <img src="assets/image/social-button-odnoklassniki.png">
-                </a>
-            </div>
-            <div class="col-lg-4 bank-bank">
-                <a href="http://localhost/shop/oplata">
-                    <img src="assets/image/visa2.png">
-                </a>
-                <a href="http://localhost/shop/oplata">
-                    <img src="assets/image/mastercard2.png">
-                </a>
-                <a href="http://localhost/shop/oplata">
-                    <img src="assets/image/mir3.png">
-                </a>
-                
-                <p><a href="http://localhost/shop">Интернет-магазин автозапчастей для иномарок.</a></p>
-            </div>
-        </div>
-    </section>
+    </div>
 </div>
+
 <?php  \php\App::renderTemplate("footer")?>

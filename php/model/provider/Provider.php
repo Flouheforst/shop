@@ -23,7 +23,7 @@
 
 			foreach ($res as $key => $value) {
 				if ( password_verify($password, $value["password"]) && $login == $value["login"] && $value["approve"] == 0) {
-					$result = $this->db->getAll("SELECT $this->fields FROM $this->tableName where login = ?s ", $login);
+					$result = $this->db->getAll("SELECT id, login, password, telephone, address, email, approve, photo, full_name, skills FROM $this->tableName where login = ?s ", $login);
 					
 					$_SESSION["dataProvider"] = $result;
 					$_SESSION["auth-provider"] = true;
@@ -31,5 +31,14 @@
 					$_SESSION["auth-provider"] = false;
 				} 
 			}
+		}
+		public function getAll(){
+			return $this->db->getAll("SELECT * from $this->tableName where approve = 0");
+		}
+
+		public function changeApprove($id, $approve){
+			$this->db->query("UPDATE $this->tableName
+				set approve = ?i
+				where id = ?i", $approve, $id);
 		}
 	} 

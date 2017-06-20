@@ -157,7 +157,7 @@
                 <?php if ($value["quantity"] > 0) { ?>
                     <div class="col-lg-3" >
                         <a href="#">
-                            <div class="product" data-id="<?php echo $value['id']; ?>">
+                            <div class="product-item" data-id="<?php echo $value['id']; ?>">
                                 <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
                                 <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
                                     <div class="img-wrap">

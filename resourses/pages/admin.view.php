@@ -30,6 +30,7 @@
                         <li class="comment"><a href=""><span class="glyphicon glyphicon-comment fa-icon"></span> Удалить комметарий</a></li>
                         <li class="feedback"><a href=""><i class="fa fa-commenting" aria-hidden="true"></i> Обратная связь</a></li>
                         <li class="reg"><a href=""><i class="fa fa-registered" aria-hidden="true"></i> Регистрация курьера</a></li>
+                        <li class="basket"><a href=""><i class="fa fa-shopping-basket" aria-hidden="true"></i> Корзина покупателей</a></li>
                         <li class=""><a href="http://localhost/shop/"><span class="glyphicon glyphicon-eye-open fa-icon"></span>Посмотреть сайт</a></li>
                         <li class=""><a href="http://localhost/shop/adminLogout"><span class="glyphicon glyphicon-log-out fa-icon"></span>Выйти</a></li>
                     </ul>
@@ -255,18 +256,72 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                    
+
                     </div>
                 </div>
             </div>
         </div> 
+        <div class="col-lg-9 affix-content" id="basket">
+            <div class="container">
+                <div class="page-header">
+                    <h3><i class="fa fa-shopping-basket" aria-hidden="true"></i> Корзина покупателей</h3>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <?php if (!empty($allprdOrder)) { ?>
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Бренд</th>
+                                        <th>Название</th>
+                                        <th>Артикул</th>
+                                        <th>Дата заказа</th>
+                                        <th>Цена</th>
+                                        <th>Метод оплаты</th>
+                                        <th>Количество</th>
+                                        <th>Удаленность</th>
+                                        <th>Сумма</th>
+                                        <th>Товар забрали</th>
+                                        <th>Назад на сайт</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="basket">
+                                    <?php foreach ($allprdOrder as $key => $value) { ?>
+                                        <tr class="cart-item js-cart-item">
+                                            <td><?php echo $value["brand"]; ?></td>
+                                            <td><?php echo $value["name"]; ?></td>
+                                            <td><?php echo $value["vendor_code"]; ?></td>
+                                            <td><?php echo $value["date_order"]; ?></td>
+                                            <td><?php echo $value["price"]; ?></td>
+                                            <td><?php echo $value["payment_method"]; ?></td>
+                                            <td>
+                                                <?php echo $value["quantity"]; ?>
+                                            </td>
+                                            <td><?php echo $value["remoteness"]; ?></td>
+                                            <td class="item"><span class="js-summa"><?php echo $value["amount"]; ?></span> руб.</td>
+                                            <td  data-id="<?php echo $value['id']; ?>" class="item item-remove"><span class="js-summa"><i class="fa fa-check" aria-hidden="true"></i></td>
+                                            <td class="remove-itemBasket item-back" data-id="<?php echo $value['id']; ?>">
+                                                <span class="cart-item__btn-remove">
+                                                    <span class="glyphicon glyphicon-remove" ></span>                                
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="col-lg-9 affix-content" id="reg">
             <div class="container">
                 <div class="page-header">
                     <h3><i class="fa fa-registered" aria-hidden="true"></i>Регистрация курьера</h3>
                 </div>
                     <div class="row ">
-                        <div class="col-lg-8 reg">
+                        <div class="col-lg-4 reg">
                             <form method="post" action="http://localhost/shop/addKur" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <input name="login" type="text" class="form-control inp-login" placeholder="Логин" data-item="login">
@@ -318,6 +373,45 @@
                                 <button type="submit" class="btn btn-default " id="btn-reg">Зарегестрировать</button>
                             </form>
                         </div>
+                        <?php if (!empty($allProvider)) { ?>
+                            <?php foreach ($allProvider as $key => $value) { ?>
+                                <div class="col-lg-8">
+                                    <div class="container-fluid well span6">
+                                        <div class="row">
+                                            <div class="row-fluid">
+                                                <div class="col-lg-4">
+                                                    <div class="span2" >
+                                                        <img src="<?php echo $value['photo']; ?>" class="img-responsive img-circle img">
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-lg-4">
+                                                    <div class="span8">
+                                                        <h3> Ф.И.О: <?php echo $value["full_name"]; ?> </h3>
+                                                        <h6> Email: <?php echo $value["email"]; ?> </h6>
+                                                        <h6> Логин: <?php echo $value["login"]; ?> </h6>
+                                                        <h6> Телефон: <?php echo $value["telephone"]; ?> </h6>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="span2">
+                                                        <div class="btn-group">
+                                                            <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
+                                                                Действия 
+                                                                <span class="icon-cog icon-white"></span><span class="caret"></span>
+                                                            </a>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a data-id="<?php echo  $value["id"]; ?>" class="del-provider" href="#"><span class="icon-trash "></span> Удалить</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                        <?php } ?>
                     </div>
             </div>
         </div>
@@ -371,7 +465,7 @@
                 <div class="container-2">
                     <div id="page-wrapper">   
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="page-title">
                                     <ol class="breadcrumb">
                                         <li class="active"><i class="fa fa-tachometer" aria-hidden="true"></i>Информационная панель</li>
@@ -384,7 +478,7 @@
                         </div> 
                                                  
                         <div class="row item-stat">
-                            <div class="col-lg-3 col-sm-6">
+                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4">
                                 <div class="circle-tile">
                                     <a href="#">
                                         <div class="circle-tile-heading dark-blue">
@@ -406,7 +500,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-sm-6">
+                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4">
                                 <div class="circle-tile">
                                     <a href="#">
                                         <div class="circle-tile-heading green">
@@ -432,7 +526,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-sm-6">
+                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4">
                                 <div class="circle-tile">
                                     <a href="#">
                                         <div class="circle-tile-heading blue">
@@ -459,7 +553,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-sm-6">
+                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4">
                                 <div class="circle-tile">
                                     <a href="#">
                                         <div class="circle-tile-heading gray">
@@ -487,7 +581,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-sm-6">
+                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4">
                                 <div class="circle-tile">
                                     <a href="#">
                                         <div class="circle-tile-heading purple">
@@ -515,7 +609,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-sm-6">
+                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4">
                                 <div class="circle-tile">
                                     <a href="#">
                                         <div class="circle-tile-heading red">
@@ -542,7 +636,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-sm-6">
+                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4">
                                 <div class="circle-tile">
                                     <a href="#">
                                         <div class="circle-tile-heading orange">
@@ -554,13 +648,13 @@
                                             Отзывы
                                         </div>
                                         <div class="circle-tile-number text-faded">
-                                            <span id="sparklineB">Неа</span>
+                                            <span id="sparklineB"><?php echo $countReview; ?></span>
                                         </div>
-                                        <a href="#" class="circle-tile-footer">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
+                                        <a href="#" class="circle-tile-footer more-reviews">Подробнее <i class="fa fa-chevron-circle-right"></i></a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-sm-6">
+                            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">
                                 <div class="circle-tile">
                                     <a href="#">
                                         <div class="circle-tile-heading rebubccapurple">
@@ -609,55 +703,62 @@
 
                     <div class="col-lg-12 header-obj">
                         <h3>Обычные товары</h3>
-                        <?php foreach ($prdCat as $key => $value) {?>
-                            <?php if ($value["approve"] === "Обычный товар") { ?>
-                                <div class="col-lg-3">
-                                    <a href="#">
-                                        <div class="product" data-id="<?php echo $value['id']; ?>">
-                                            <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
-                                            <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
-                                                <div class="img-wrap">
-                                                    <img class="img-responsive" src="<?php echo $value['photo']; ?>">
+                        <div class="row">
+                            <?php foreach ($prdCat as $key => $value) {?>
+                                <?php if ($value["approve"] === "Обычный товар") { ?>
+                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                            <a href="#">
+                                                <div class="product" data-id="<?php echo $value['id']; ?>">
+                                                    <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
+                                                    <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
+                                                        <div class="img-wrap">
+                                                            <img class="img-responsive" src="<?php echo $value['photo']; ?>">
+                                                        </div>
+                                                    <p class="price">Цена: <span><?php echo $value["price"]; ?></span></p>
+                                                    <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
+                                                    <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
+                                                    <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
+                                                    <p class="hover-list">Под кат: <span><?php echo $value["name_under"]; ?></span></p>
                                                 </div>
-                                            <p class="price">Цена: <span><?php echo $value["price"]; ?></span></p>
-                                            <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
-                                            <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
-                                            <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
-                                            <p class="hover-list">Под кат: <span><?php echo $value["name_under"]; ?></span></p>
+                                            </a>
                                         </div>
-                                    </a>
-                                </div>
+                                <?php } ?>
                             <?php } ?>
-                        <?php } ?>
+                        </div>
+
                     </div>
                     <div class="col-lg-12 header-newspaper">
                         <h3>Товары из газеты</h3>
-                        <?php foreach ($prdCat as $key => $value) {?>
-                            <?php if ($value["approve"] === "Газета") { ?>
-                                <div class="col-lg-3" >
-                                    <a href="#">
-                                        <div class="product" data-id="<?php echo $value['id']; ?>">
-                                            <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
-                                            <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
-                                                <div class="img-wrap">
-                                                    <img class="img-responsive" src="<?php echo $value['photo']; ?>">
-                                                </div>
-                                            <p class="price">Цена: <span><?php echo $value["price"]; ?></span></p>
-                                            <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
-                                            <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
-                                            <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
-                                            <p class="hover-list">Под кат: <span><?php echo $value["name_under"]; ?></span></p>
-                                        </div>
-                                    </a>
-                                </div>
+
+                        <div class="row">
+                            <?php foreach ($prdCat as $key => $value) {?>
+                                <?php if ($value["approve"] === "Газета") { ?>
+                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" >
+                                        <a href="#">
+                                            <div class="product" data-id="<?php echo $value['id']; ?>">
+                                                <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
+                                                <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
+                                                    <div class="img-wrap">
+                                                        <img class="img-responsive" src="<?php echo $value['photo']; ?>">
+                                                    </div>
+                                                <p class="price">Цена: <span><?php echo $value["price"]; ?></span></p>
+                                                <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
+                                                <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
+                                                <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
+                                                <p class="hover-list">Под кат: <span><?php echo $value["name_under"]; ?></span></p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                <?php } ?>
                             <?php } ?>
-                        <?php } ?>
+                        </div>
                     </div>
                     <div class="col-lg-12 header-stock">
                         <h3>Товары с акцией</h3>
+                        <div class="row">
                         <?php foreach ($prdCat as $key => $value) {?>
                             <?php if ($value["approve"] === "Акция") { ?>
-                                <div class="col-lg-3">
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                                     <a href="#">
                                         <div class="product" data-id="<?php echo $value['id']; ?>">
                                             <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
@@ -675,75 +776,82 @@
                                 </div>
                             <?php } ?>
                         <?php } ?>
+                        </div>
                     </div>
                     <div class="col-lg-12 header-deleted">
                         <h3>Удаленные товары</h3>
-                        <?php foreach ($prdCat as $key => $value) {?>
-                            <?php if ($value["approve"] === "Удален") { ?>
-                                <div class="col-lg-3">
-                                    <a href="#">
-                                        <div class="product" data-id="<?php echo $value['id']; ?>">
-                                            <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
-                                            <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
-                                                <div class="img-wrap">
-                                                    <img class="img-responsive" src="<?php echo $value['photo']; ?>">
-                                                </div>
-                                            <p class="price">Цена: <span><?php echo $value["price"]; ?></span></p>
-                                            <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
-                                            <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
-                                            <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
-                                            <p class="hover-list">Под кат: <span><?php echo $value["name_under"]; ?></span></p>
-                                        </div>
-                                    </a>
-                                </div>
+                        <div class="row">
+                            <?php foreach ($prdCat as $key => $value) {?>
+                                <?php if ($value["approve"] === "Удален") { ?>
+                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                        <a href="#">
+                                            <div class="product" data-id="<?php echo $value['id']; ?>">
+                                                <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
+                                                <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
+                                                    <div class="img-wrap">
+                                                        <img class="img-responsive" src="<?php echo $value['photo']; ?>">
+                                                    </div>
+                                                <p class="price">Цена: <span><?php echo $value["price"]; ?></span></p>
+                                                <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
+                                                <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
+                                                <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
+                                                <p class="hover-list">Под кат: <span><?php echo $value["name_under"]; ?></span></p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                <?php } ?>
                             <?php } ?>
-                        <?php } ?>
+                       </div>
                     </div>
                     <div class="col-lg-12 header-news">
                         <h3>Новинки</h3>
-                        <?php foreach ($prdCat as $key => $value) {?>
-                            <?php if ($value["approve"] === "Новинка") { ?>
-                                <div class="col-lg-3">
-                                    <a href="#">
-                                        <div class="product" data-id="<?php echo $value['id']; ?>">
-                                            <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
-                                            <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
-                                                <div class="img-wrap">
-                                                    <img class="img-responsive" src="<?php echo $value['photo']; ?>">
-                                                </div>
-                                            <p class="price">Цена: <span><?php echo $value["price"]; ?></span></p>
-                                            <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
-                                            <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
-                                            <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
-                                            <p class="hover-list">Под кат: <span><?php echo $value["name_under"]; ?></span></p>
-                                        </div>
-                                    </a>
-                                </div>
+                        <div class="row">
+                            <?php foreach ($prdCat as $key => $value) {?>
+                                <?php if ($value["approve"] === "Новинка") { ?>
+                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                        <a href="#">
+                                            <div class="product" data-id="<?php echo $value['id']; ?>">
+                                                <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
+                                                <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
+                                                    <div class="img-wrap">
+                                                        <img class="img-responsive" src="<?php echo $value['photo']; ?>">
+                                                    </div>
+                                                <p class="price">Цена: <span><?php echo $value["price"]; ?></span></p>
+                                                <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
+                                                <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
+                                                <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
+                                                <p class="hover-list">Под кат: <span><?php echo $value["name_under"]; ?></span></p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                <?php } ?>
                             <?php } ?>
-                        <?php } ?>
+                        </div>
                     </div>
                     <div class="col-lg-12 header-bestseller">
                         <h3>Хиты продаж</h3>
-                        <?php foreach ($prdCat as $key => $value) {?>
-                            <?php if ($value["approve"] === "Хит продаж ") { ?>
-                                <div class="col-lg-3">
-                                    <a href="#">
-                                        <div class="product" data-id="<?php echo $value['id']; ?>">
-                                            <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
-                                            <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
-                                                <div class="img-wrap">
-                                                    <img class="img-responsive" src="<?php echo $value['photo']; ?>">
-                                                </div>
-                                            <p class="price">Цена: <span><?php echo $value["price"]; ?></span></p>
-                                            <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
-                                            <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
-                                            <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
-                                            <p class="hover-list">Под кат: <span><?php echo $value["name_under"]; ?></span></p>
-                                        </div>
-                                    </a>
-                                </div>
+                        <div class="row">
+                            <?php foreach ($prdCat as $key => $value) {?>
+                                <?php if ($value["approve"] === "Хит продаж ") { ?>
+                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                        <a href="#">
+                                            <div class="product" data-id="<?php echo $value['id']; ?>">
+                                                <p class="vendor_code"><?php echo $value["vendor_code"]; ?></p>
+                                                <p class="name"><a href="">Название: <?php echo $value["name"]; ?></a></p>
+                                                    <div class="img-wrap">
+                                                        <img class="img-responsive" src="<?php echo $value['photo']; ?>">
+                                                    </div>
+                                                <p class="price">Цена: <span><?php echo $value["price"]; ?></span></p>
+                                                <p class="quantity">Кол-во: <span><?php echo $value["quantity"]; ?></span></p>
+                                                <p class="hover-list">Бренд: <span><?php echo $value["brand"]; ?></span></p>
+                                                <p class="hover-list">Размер: <span><?php echo $value["dimensions"]; ?></span></p>
+                                                <p class="hover-list">Под кат: <span><?php echo $value["name_under"]; ?></span></p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                <?php } ?>
                             <?php } ?>
-                        <?php } ?>
+                        </div>
                     </div>              
                 </div>
             </div>
@@ -868,10 +976,51 @@
         <div class="col-sm-9 affix-content" id="comment">
             <div class="container">
                 <div class="row">
-                        <div class="page-header">
+                    <div class="page-header">
                         <h3><span class="glyphicon glyphicon-comment fa-icon"></span>Удалить комментарий</h3>
                     </div>
-                    comment 
+                    <?php if (isset($allReview)) { ?>
+                        <div class="col-lg-12 search">
+                            <div class="input-group add-cat">
+                              <input type="text" class="form-control" placeholder="Введите номер id или Ф.И.О пользователя">
+                              <span class="input-group-btn">
+                                  <a href="">
+                                    <button class="btn btn-secondary" type="button">Найти<i class="fa fa-search" aria-hidden="true"></i></button>
+                                  </a>
+                              </span>
+                            </div>
+                        </div>
+                            <div class="col-lg-12 all-comment">
+                        <?php foreach ($allReview as $key => $value) { ?> 
+                                <section class="comment-list">
+                                <!-- Second Comment Reply -->
+                                    <article class="row">
+                                        <div class="col-md-12 col-sm-9">
+                                          <div class="panel panel-default arrow left">
+                                            <div class="panel-heading right">
+                                                <header class="text-left">
+                                                    #id <?php echo $value["id"]; ?>
+                                                        <div class="pull-right">
+                                                        <i data-id="<?php echo $value['id']; ?>" class="fa fa-trash-o fa-1x del" aria-hidden="true"></i>
+                                                    </div>
+                                                    <div class="comment-user"><i class="fa fa-user"></i> <?php echo $value["author"]; ?></div>
+                                                    <time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> <?php echo $value["data"]; ?></time>
+                                                </header>
+                                            </div>
+                                            <div class="panel-body">
+                                              <div class="comment-post">
+                                                <p>
+                                                  <?php echo $value["text"]; ?>
+                                                </p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    </article>
+                                </section>
+                        <?php } ?>
+                            </div>
+                    <?php } ?>
                 </div>       
             </div>
         </div>

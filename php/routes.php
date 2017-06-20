@@ -9,7 +9,9 @@
 		$productCategory = new \php\model\join\ProductCategory();
 
 		$order = new \php\model\order\Order();
-		$order->getCunt($_SESSION["dataUser"][0]["idclient"]);
+		if (isset($_SESSION["dataUser"])) {
+			$order->getCunt($_SESSION["dataUser"][0]["idclient"]);
+		}
 
 		$prdCat = $productCategory->getPrdCat();
 		$resCat = $defCat->getAll();
@@ -18,6 +20,8 @@
 		$stock = $product->getOnApprove("Акция", 4);
 		$newOne = $product->getOnApprove("Новинка", 1);
 		$newTwo = $product->getOnApprove("Новинка", 2);
+
+		
 
 		$new = [
 			"newOne" => $newOne,
@@ -30,7 +34,8 @@
 				"resUnder" => $resUnder,
 				"hitPrd" => $hitPrd,
 				"stock" => $stock,
-				"new" => $new
+				"new" => $new,
+				
 			]);
 
 	});
@@ -39,12 +44,13 @@
 		if ($_SESSION["auth"]) {
 			$product = new \php\model\product\Product();
 			$order = new \php\model\order\Order();
+			$prdOrder = new \php\model\join\ProductOrder();
 
 			$orderOnId = $order->getOnId($_SESSION["dataUser"][0]["idclient"]);
-
+			$onPrdOrder = $prdOrder->getProductId($orderOnId);
+			$order->getCunt($_SESSION["dataUser"][0]["idclient"]);
 			$newOne = $product->getOnApprove("Новинка", 1);
 			$newTwo = $product->getOnApprove("Новинка", 2);
-
 			$defCat = new \php\model\category\DefCategory();
 			$defUnderCat = new \php\model\category\UnderCat();
 			$resCat = $defCat->getAll();
@@ -55,12 +61,49 @@
 				"newTwo" => $newTwo
 			];
 
-			\php\App::renderPages("basket", [
+			$onIdProduct = $product->getOnIdHas($onPrdOrder);
+
+			if ( !empty($orderOnId) && !empty($onIdProduct) ) {
+				foreach ($orderOnId as $key => $value) {
+					$basket[$key] = array_merge($orderOnId[$key], $onIdProduct[$key]);
+				}
+				\php\App::renderPages("basket", [
 					"resCat" => $resCat,
 					"resUnder" => $resUnder,
 					"new" => $new,
-					"orderOnId" => $orderOnId
+					"basket" => $basket
 				]);
+			} else {
+				\php\App::renderPages("basket", [
+					"resCat" => $resCat,
+					"resUnder" => $resUnder,
+					"new" => $new
+				]);
+			}
+		
+		}
+	});
+
+	$router->post("/removeBaset", function(){
+		if ($_SESSION["admin-auth"]) {
+			$id = $_POST["id"];
+			$order = new \php\model\order\Order();
+			$order->changeApprove($id, 2);
+		}
+	});
+
+	$router->post("/backProduct", function(){
+		if ($_SESSION["admin-auth"]) {
+			$id = $_POST["id"];
+			$order = new \php\model\order\Order();
+			$prdOrder = new \php\model\join\ProductOrder();
+			$product = new \php\model\product\Product();
+			$quantity = $order->getQuantity($id);
+			$order->changeApprove($id, 3);
+			$idPrd = $prdOrder->getPrdId($id);
+			
+			$product->updateQuantiy($idPrd, $quantity);
+
 		}
 	});
 
@@ -71,20 +114,22 @@
 			$product = new \php\model\product\Product();
 			$defCat = new \php\model\category\DefCategory();
 			$defUnderCat = new \php\model\category\UnderCat();
+			$order = new \php\model\order\Order();
 
+			$order->getCunt($_SESSION["dataUser"][0]["idclient"]);
 			$hitPrd = $product->getOnApprove("Хит продаж ", 4);
 			$stock = $product->getOnApprove("Акция", 4);
 			$newOne = $product->getOnApprove("Новинка", 1);
 			$newTwo = $product->getOnApprove("Новинка", 2);
 			$resCat = $defCat->getAll();
 			$resUnder = $defUnderCat->getAll();
+			$res = $productCat->find($valueSearch);
+
 			$new = [
 				"newOne" => $newOne,
 				"newTwo" => $newTwo
-			
-		];
+			];
 
-			$res = $productCat->find($valueSearch);
 
 			\php\App::renderPages("search", [
 					"res" => $res,
@@ -102,13 +147,15 @@
 	});
 
 	$router->get("/all-Product", function(){
+		
 		$product = new \php\model\product\Product();
 		$defCat = new \php\model\category\DefCategory();
 		$defUnderCat = new \php\model\category\UnderCat();
-
+		$order = new \php\model\order\Order();
 		$productCategory = new \php\model\join\ProductCategory();
+		
 		$prdCat = $productCategory->getPrdCatNotDel();
-
+		$order->getCunt($_SESSION["dataUser"][0]["idclient"]);
 		$hitPrd = $product->getOnApprove("Хит продаж ", 4);
 		$stock = $product->getOnApprove("Акция", 4);
 		$newOne = $product->getOnApprove("Новинка", 1);
@@ -167,6 +214,21 @@
 			echo "ok";
 		} else {
 			echo "nope";
+		}
+	});
+
+	$router->post("/addReviews", function(){
+		if (isset($_SESSION["auth"])) {
+			$text = $_POST["text"];
+			$id = $_POST["idPrd"];
+			$author = $_SESSION["dataUser"][0]["email"];
+
+			$review = new \php\model\reviews\Reviews();
+			$review->add($text, $author, 0, $id);
+
+			\php\App::redirect("shop/");
+		} else {
+			\php\App::redirect("shop/");
 		}
 	});
 
@@ -443,15 +505,52 @@
 			$feedback = new \php\model\feadback\Feedback();
 			$resFeed = $feedback->getAllF();
 
-			php\App::renderPages("admin", [
+			$provider = new \php\model\provider\Provider();
+			$allProvider = $provider->getAll();
+
+			$order = new \php\model\order\Order();
+			$allOrder = $order->getAll();
+
+			$prdOrder = new \php\model\join\ProductOrder();
+			$onPrdOrder = $prdOrder->getProductId($allOrder);
+
+			$onIdProduct = $product->getOnIdHas($onPrdOrder);
+
+			$review = new \php\model\reviews\Reviews();
+			$countReview = $review->getCol();
+			$allReview = $review->getAll();
+
+			if (!empty($allOrder) && !empty($onIdProduct)) {
+				foreach ($allOrder as $key => $value) {
+					$allprdOrder[$key] = array_merge($allOrder[$key], $onIdProduct[$key]);
+				}
+				php\App::renderPages("admin", [
 					"defTag" => $resCat,
 					"underCat" => $resUnder,
 					"prdCat" => $prdCat,
 					"countPrd" => $countPrd,
 					"countClient" => $countClient,
 					"feedback" => $resFeed,
-					"allClient" => $allClient
+					"allClient" => $allClient,
+					"allProvider" =>$allProvider,
+					"allprdOrder" => $allprdOrder,
+					"countReview" => $countReview,
+					"allReview" => $allReview
 				]);
+			} else {
+				php\App::renderPages("admin", [
+					"defTag" => $resCat,
+					"underCat" => $resUnder,
+					"prdCat" => $prdCat,
+					"countPrd" => $countPrd,
+					"countClient" => $countClient,
+					"feedback" => $resFeed,
+					"allClient" => $allClient,
+					"allProvider" => $allProvider,
+					"countReview" => $countReview,
+					"allReview" => $allReview
+				]);
+			}
 		} else {
 			\php\App::redirect("shop/signAdmin");
 		}
@@ -525,6 +624,9 @@
 			"newTwo" => $newTwo,
 		];
 
+		$order = new \php\model\order\Order();
+		$order->getCunt($_SESSION["dataUser"][0]["idclient"]);
+
 
 		$defCat = new \php\model\category\DefCategory();
 		$defUnderCat = new \php\model\category\UnderCat();
@@ -585,6 +687,9 @@
 
 		$newOne = $product->getOnApprove("Новинка", 1);
 		$newTwo = $product->getOnApprove("Новинка", 2);
+
+		$order = new \php\model\order\Order();
+		$order->getCunt($_SESSION["dataUser"][0]["idclient"]);
 		
 		$new = [
 			"newOne" => $newOne,
@@ -760,9 +865,30 @@
 
 	$router->get("/provider", function(){
 		if ($_SESSION["auth-provider"]) {
-			\php\App::renderPages("provider");
+			$order = new \php\model\order\Order();
+			$product = new \php\model\product\Product();
+			$prdOrder = new \php\model\join\ProductOrder();
+			$client = new \php\model\client\Client();
 
-			$provider = new \php\model\provider\Provider();
+			$allOrder = $order->getOnApprove();
+			$clientId = $order->getClientId($allOrder);
+
+			$clientData = $client->getOnId($clientId);
+
+			$onPrdOrder = $prdOrder->getProductId($allOrder);
+			$onIdProduct = $product->getOnIdHas($onPrdOrder);
+	
+			foreach ($allOrder as $key => $value) {
+				$allprdOrder[$key] = array_merge($allOrder[$key], $onIdProduct[$key]);
+			}
+
+			foreach ($allprdOrder as $key => $value) {
+				$clientPrdOrder[$key] = array_merge($allprdOrder[$key], $clientData[$key]);
+			}
+				
+			\php\App::renderPages("provider", [
+					"clientPrdOrder" => $clientPrdOrder
+				]);
 			
 		} else {
 			\php\App::redirect("shop/providerSign");
@@ -771,18 +897,243 @@
 
 	$router->post("/addBasketPrd", "User:addBasketPrd");
 
-	$router->get("/userSettings", function(){
-
-	});
-
-	$router->get("/userLogout", function(){
-
-	});
-
 	$router->post("/delItemBasket", function(){
 		$id = $_POST["id"];
 		$approve = 1;
 		$order = new \php\model\order\Order();
 		$order->changeApprove($id, $approve);
+
+		$order = new \php\model\order\Order();
+		$order->getCunt($_SESSION["dataUser"][0]["idclient"]);
 		
+	});
+
+	$router->post("/delProvider", function(){
+		$id = $_POST["id"];
+		$id = intval($id);
+		$approve = 1;
+		$provider = new \php\model\provider\Provider();
+		$provider->changeApprove($id, $approve);
+	});
+
+	$router->post("/takeOrder", function(){
+		$remot = $_POST["remot"];
+		$orderid = $_POST["orderid"];
+
+		if ($remot === "Москва") {
+			$delivery = new \php\model\delivery\Delivery();
+			$providerHasDilev = new \php\model\has\ProviderHasDelivery();
+			$order = new \php\model\order\Order();
+			$idDelivery = $delivery->add(700, 0);
+			$providerHasDilev->add($_SESSION["dataProvider"][0]["id"], $idDelivery);
+			$order->setDeliveryId($idDelivery, $orderid);
+
+
+		} else {
+			$delivery = new \php\model\delivery\Delivery();
+			$providerHasDilev = new \php\model\has\ProviderHasDelivery();
+			$order = new \php\model\order\Order();
+			$delivery->add(1000, 0);
+			$providerHasDilev->add($_SESSION["dataProvider"][0]["id"], $idDelivery);
+			$order->setDeliveryId($idDelivery, $orderid);
+		}
+		
+	});
+
+	$router->post("/orderDelivered", function(){
+		if ($_SESSION["auth-provider"]) {
+			$orderid = $_POST["orderid"];
+			$order = new \php\model\order\Order();
+			$order->changeApprove($orderid, 4);
+		}
+	});
+
+	$router->get("/userSettings", function(){
+		if (isset($_SESSION["auth"])) {
+		$product = new \php\model\product\Product();
+		$defCat = new \php\model\category\DefCategory();
+		$defUnderCat = new \php\model\category\UnderCat();
+		$order = new \php\model\order\Order();
+		$prdOrder = new \php\model\join\ProductOrder();
+
+		$orderOnId = $order->getOnId($_SESSION["dataUser"][0]["idclient"]);
+
+		$onPrdOrder = $prdOrder->getProductId($orderOnId);
+		$onIdProduct = $product->getOnIdHas($onPrdOrder);
+
+		$newOne = $product->getOnApprove("Новинка", 1);
+		$newTwo = $product->getOnApprove("Новинка", 2);
+		
+		$new = [
+			"newOne" => $newOne,
+			"newTwo" => $newTwo,
+		];
+
+		$resCat = $defCat->getAll();
+		$resUnder = $defUnderCat->getAll();
+
+
+		if (!empty($orderOnId) && !empty($onIdProduct)) {
+			foreach ($orderOnId as $key => $value) {
+				$basket[$key] = array_merge($orderOnId[$key], $onIdProduct[$key]);
+			}
+			\php\App::renderPages("userSettings", [
+					"resCat" => $resCat,
+					"resUnder" => $resUnder,
+					"new" => $new,
+					"basket" => $basket
+				]);
+		} else {
+			\php\App::renderPages("userSettings", [
+					"resCat" => $resCat,
+					"resUnder" => $resUnder,
+					"new" => $new
+				]);
+		}
+			
+		} else {
+			\php\FlashPush::add("auth-err", "Вы не авторизовались");
+			\php\App::redirect("shop/signUser");
+		}
+	});
+
+	$router->post("/changeUser", function(){
+		if (isset($_SESSION["auth"])) {
+			if ( !empty($_POST["email"]) && !empty($_POST["pass"]) && !empty($_POST["full_name"]) && !empty($_POST["tel"]) ) {
+				if ( $_POST["tel"] == intval($_POST["tel"]) && $_POST["tel"] > 0 ) {
+					$email = $_POST["email"];
+					$pass = $_POST["pass"];
+					$full_name = $_POST["full_name"];
+					$addres = $_POST["addres"];
+					$data = $_POST["data"];
+					$tel = $_POST["tel"];
+					
+					$client = new \php\model\client\Client(); 
+					$passwordHash = password_hash($pass, PASSWORD_DEFAULT);
+
+					$client->change($email, $passwordHash, $full_name, $addres, $data, $tel);
+				} else {
+					\php\FlashPush::add("tel", "Вы ввели неправильный телефон");
+					\php\App::redirect("shop/userSettings");
+				}
+			} else {
+				\php\FlashPush::add("user-input", "Вы не заполнили все поля");
+				\php\App::redirect("shop/userSettings");
+			}
+		} else {
+			\php\FlashPush::add("auth-err", "Вы не авторизовались");
+			\php\App::redirect("shop/signUser");
+		}
+	});
+
+	$router->get("/prd", function(){
+		$id = $_GET["product-id"];
+		$article = $_GET["article"];
+		$product = new \php\model\product\Product();
+		$newOne = $product->getOnApprove("Новинка", 1);
+		$newTwo = $product->getOnApprove("Новинка", 2);
+		$defCat = new \php\model\category\DefCategory();
+		$defUnderCat = new \php\model\category\UnderCat();
+		$resCat = $defCat->getAll();
+		$resUnder = $defUnderCat->getAll();
+
+		$revies = new \php\model\reviews\Reviews();
+		$revOnPrd = $revies->getOnPrd($id);
+
+		$new = [
+			"newOne" => $newOne,
+			"newTwo" => $newTwo,
+		];
+
+		$product = new \php\model\product\Product();
+		$prd = $product->getPrd($id, $article);
+
+		if (empty($prd)) {
+			\php\App::redirect("shop/");
+		} else {
+			\php\App::renderPages("prd", [
+				"prd" => $prd,
+				"new" => $new,
+				"resCat" => $resCat,
+				"resUnder" => $resUnder,
+				"id" => $id,
+				"revOnPrd" => $revOnPrd
+			]);
+		}
+
+		
+	});
+
+	$router->post("/searchReviews" , function(){
+		if ($_SESSION["admin-auth"]) {
+			$query = $_POST["query"];
+
+			$review = new \php\model\reviews\Reviews();
+			$response = $review->search($query);
+
+
+			if ($response) {
+				$res = [
+					"all" => $response,
+					"status" => "ok"
+				];
+			} else {
+				$res = [
+					"status" => "nope"
+				];
+			}
+			echo json_encode($res);
+		}
+	});
+
+	$router->post("/allReviews", function(){
+		if ($_SESSION["admin-auth"]) {
+			$review = new \php\model\reviews\Reviews();
+
+			$allReview = $review->getAll();
+
+			if ($allReview) {
+				$res = [
+					"all" => $allReview,
+					"status" => "ok"
+				];
+			} else {
+				$res = [
+					"status" => "nope"
+				];
+			}
+
+			echo json_encode($res);
+		}
+		
+	});
+
+	$router->post("/delReview", function(){
+		if ($_SESSION["admin-auth"]) {
+			$id = $_POST["id"];
+
+			$review = new \php\model\reviews\Reviews();
+			$review->changeApprove($id, 1);
+		}
+	});
+
+	$router->post("/emptyQuery", function(){
+		if ($_SESSION["admin-auth"]) {
+			$review = new \php\model\reviews\Reviews();
+
+			$allReview = $review->getAll();
+
+			if ($allReview) {
+				$res = [
+					"all" => $allReview,
+					"status" => "ok"
+				];
+			} else {
+				$res = [
+					"status" => "nope"
+				];
+			}
+
+			echo json_encode($res);
+		}
 	});

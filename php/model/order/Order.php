@@ -24,12 +24,13 @@
 		}
 
 		public function getCunt($id){
-			$_SESSION["user-orders"] = $this->db->getOne("select count(*) from $this->tableName where client_idclient = ?i", $id);
+			unset($_SESSION["user-orders"]);
+			$_SESSION["user-orders"] = $this->db->getOne("SELECT count(*) from $this->tableName where client_idclient = ?i  and isApprove != 2 and isApprove != 3 and isApprove != 4", $id);
 		}
 
 		public function getOnId($id){
 			$id = intval($id);
-			return $this->db->getAll("SELECT id, date_order, price, payment_method, quantity, remoteness, amount from $this->tableName where client_idclient = ?i and isApprove = 0", $id);
+			return $this->db->getAll("SELECT id, date_order, price, payment_method, quantity, remoteness, amount from $this->tableName where client_idclient = ?i  and isApprove != 2 and isApprove != 3 and isApprove != 4", $id);
 		}
 
 		public function changeApprove($id, $approve){
@@ -37,5 +38,36 @@
 			$this->db->query("UPDATE shop.`order` 
 				set isApprove = ?i
 				where id = ?i", $approve, $id);
+		}
+
+		public function getAll(){
+			return $this->db->getAll("select * from $this->tableName where isApprove = 1");
+		}
+
+		public function getOnApprove(){
+			return $this->db->getAll("select * from $this->tableName where isApprove = 0");
+		}
+
+		public function getQuantity($id){
+			return $this->db->getOne("select quantity from $this->tableName where id = ?s", $id);
+		}
+
+		public function getClientId($allOrder){
+			$clientId = [];
+
+			foreach ($allOrder as $key => $value) {
+				$clientId[$key] = $this->db->getOne("SELECT client_idclient FROM $this->tableName where id = ?s", $value["id"]);
+			}
+
+			return $clientId;
+		}
+
+		public function setDeliveryId($idDelivery, $orderid){
+			$idDelivery = intval($idDelivery);
+			$orderid = intval($orderid);
+
+			$this->db->query("UPDATE $this->tableName
+					SET delivery_id = ?i
+					WHERE id = ?i", $idDelivery, $orderid);
 		}
 	} 

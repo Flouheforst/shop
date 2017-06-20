@@ -10,8 +10,10 @@ $("#comment").hide();
 $("#user").hide();
 $("#feedback").hide();
 $("#reg").hide();
+$("#basket").hide();
 $("#changeUnder").hide();
 $("#successChangeUnder").hide();
+
 (function ($) {
 	$('.spinner .btn:first-of-type').on('click', function() {
 		$('.spinner input').val( parseInt($('.spinner input').val(), 10) + 1);
@@ -22,6 +24,21 @@ $("#successChangeUnder").hide();
 })(jQuery);
 
 $(document).ready(function(){
+
+	$(".sidebar-navbar-collapse ul .basket").click(function(e){
+		e.preventDefault();
+		$(".sidebar-navbar-collapse ul li").removeClass("active");
+		$(this).addClass("active");
+		$("#statistic").hide();
+		$("#product").hide();
+		$("#category").hide();
+		$("#user").hide();
+		$("#comment").hide();
+		$("#feedback").hide();
+		$("#reg").hide();
+		$("#basket").show();
+	});
+
 
 	$(".sidebar-navbar-collapse ul .statistic").click(function(e){
 		e.preventDefault();
@@ -34,6 +51,7 @@ $(document).ready(function(){
 		$("#comment").hide();
 		$("#feedback").hide();
 		$("#reg").hide();
+		$("#basket").hide();
 	});
 
 	$(".sidebar-navbar-collapse ul .reg").click(function(e){
@@ -47,6 +65,7 @@ $(document).ready(function(){
 		$("#comment").hide();
 		$("#feedback").hide();
 		$("#reg").show();
+		$("#basket").hide();
 	});
 
 	$(".sidebar-navbar-collapse ul .product").click(function(e){
@@ -60,6 +79,7 @@ $(document).ready(function(){
 		$("#comment").hide();
 		$("#feedback").hide();
 		$("#reg").hide();
+		$("#basket").hide();
 	});
 
 	$(".sidebar-navbar-collapse ul .feedback").click(function(e){
@@ -73,6 +93,7 @@ $(document).ready(function(){
 		$("#user").hide();
 		$("#comment").hide();
 		$("#reg").hide();
+		$("#basket").hide();
 	});
 
 	$(".sidebar-navbar-collapse ul .category").click(function(e){
@@ -86,6 +107,7 @@ $(document).ready(function(){
 		$("#comment").hide();
 		$("#feedback").hide();
 		$("#reg").hide();
+		$("#basket").hide();
 	});
 	$(".sidebar-navbar-collapse ul .user").click(function(e){
 		e.preventDefault();
@@ -98,6 +120,7 @@ $(document).ready(function(){
 		$("#comment").hide();
 		$("#feedback").hide();
 		$("#reg").hide();
+		$("#basket").hide();
 	});
 	$(".sidebar-navbar-collapse ul .comment").click(function(e){
 		e.preventDefault();
@@ -110,15 +133,18 @@ $(document).ready(function(){
 		$("#comment").show();
 		$("#feedback").hide();
 		$("#reg").hide();
+		$("#basket").hide();
 
 	});
 
 	var trigger = true;
 
 	$("body").mousedown(function(event){
-		var X = event.pageX - 320; 
-    	var Y = event.pageY - 250; 
+		var X = event.pageX; 
+    	var Y = event.pageY; 
 
+    	console.log(X);
+    	console.log(Y);
 	    if(event.button == 1){
 	        if (trigger === true) {
 				trigger = false;
@@ -423,6 +449,8 @@ $(document).ready(function(){
 		})
 	});
 
+	
+
 	$("#statistic .getUser").click(function(){
 		$.ajax({
 			url : "http://localhost/shop/getUser",
@@ -563,4 +591,257 @@ $(document).ready(function(){
 	});
 	*/
 
+	$("#reg .del-provider").click(function(){
+		var id = $(this).data("id");
+		$.ajax({
+			url : "http://localhost/shop/delProvider",
+			method: 'POST',
+			data : {
+				id : id
+			},
+
+			success: function(data) {
+				alert("Курьер удален");
+			}
+		})
+	});
+
+
+
+	$("#basket .item-remove").click(function(){
+		var id = $(this).data("id");
+		alert(id);
+		$.ajax({
+			url : "http://localhost/shop/removeBaset",
+			method: 'POST',
+			data : {
+				id : id
+			},
+
+			success: function() {
+				alert("Товар убран с товарных остатков");
+			}
+		})
+	});
+
+	$("#basket .item-back").click(function(){
+		var id = $(this).data("id");
+		$.ajax({
+			url : "http://localhost/shop/backProduct",
+			method: 'POST',
+			data : {
+				id : id
+			},
+
+			success: function() {
+				alert();
+			}
+		})
+	});
+
+
+
+	$("#provider .my-list .takeOrder").click(function(){
+		var remot = $(this).data("remot");
+		var orderid = $(this).data("orderid");
+		$.post({
+			url : "http://localhost/shop/takeOrder",
+			data : {
+				remot : remot,
+				orderid : orderid
+			},
+			success: function() {
+				alert("Заказ взят");
+			}
+		})
+	});
+
+	$("#provider .my-list .orderDelivered").click(function(){
+		var orderid = $(this).data("orderid");
+		$.post({
+			url : "http://localhost/shop/orderDelivered",
+			data : {
+				orderid : orderid
+			},
+			success: function() {
+
+			}
+		})
+	});
+
+	$("#comment .add-cat input").keyup(function(){
+		var query = $(this).val();
+		if (query.length !== 0) {
+			$.post({
+			url : "http://localhost/shop/searchReviews",
+			data : {
+				query : query
+			},
+			success: function(data) {
+				var data = $.parseJSON(data);
+
+					if (data.status === "ok") {
+						$('#comment .all-comment').empty();
+
+						var out = '';
+						for(val in data.all){
+							var revies = data.all[val];
+							out+= "<section class='comment-list'>";
+							out+= "<article class='row'>";
+							out+= " <div class='col-md-12 col-sm-9'>";
+							out+= "<div class='panel panel-default arrow left'>";
+							out+= "<div class='panel-heading right'>";
+							out+= "<header class='text-left'>";
+							out+= "#id " + revies.id +  "";
+							out+= "<div class='pull-right'>";
+							out+= "<i class='fa fa-trash-o fa-1x del' aria-hidden='true'></i>";
+							out+= "</div>";
+							out+= "<div class='comment-user'><i class='fa fa-user'></i> " + revies.author + "</div>";
+							out+= "<time class='comment-date' datetime='16-12-2014 01:05'><i class='fa fa-clock-o'></i> " + revies.data + "</time>";
+							out+= "</header>";
+							out+= "</div>";
+							out+= "<div class='panel-body'>";
+							out+= "<div class='comment-post'>";
+							out+= "<p>";
+							out+= " " + revies.text;
+							out+= "</p>";
+							out+= "</div>";
+							out+= "</div>";
+							out+= "</div>";
+							out+= "</div>";
+							out+= "</article>";
+							out+= "</section>";
+						}
+						$('#comment .all-comment').append(out);
+					} else {
+						var err = '<h2 class="error-h">Ничего не найдено ... </h2>';
+						$('#comment .all-comment').empty();
+						$('#comment .all-comment').append(err);
+					}
+				}
+			})
+		} else {
+			$.post({
+				url : "http://localhost/shop/emptyQuery",
+				success : function(data){
+					var data = $.parseJSON(data);
+
+					if (data.status === "ok") {
+						$('#comment .all-comment').empty();
+
+						var out = '';
+						for(val in data.all){
+							var revies = data.all[val];
+							out+= "<section class='comment-list'>";
+							out+= "<article class='row'>";
+							out+= " <div class='col-md-12 col-sm-9'>";
+							out+= "<div class='panel panel-default arrow left'>";
+							out+= "<div class='panel-heading right'>";
+							out+= "<header class='text-left'>";
+							out+= "#id " + revies.id +  "";
+							out+= "<div class='pull-right'>";
+							out+= "<i class='fa fa-trash-o fa-1x del' aria-hidden='true'></i>";
+							out+= "</div>";
+							out+= "<div class='comment-user'><i class='fa fa-user'></i> " + revies.author + "</div>";
+							out+= "<time class='comment-date' datetime='16-12-2014 01:05'><i class='fa fa-clock-o'></i> " + revies.data + "</time>";
+							out+= "</header>";
+							out+= "</div>";
+							out+= "<div class='panel-body'>";
+							out+= "<div class='comment-post'>";
+							out+= "<p>";
+							out+= " " + revies.text;
+							out+= "</p>";
+							out+= "</div>";
+							out+= "</div>";
+							out+= "</div>";
+							out+= "</div>";
+							out+= "</article>";
+							out+= "</section>";
+						}
+						$('#comment .all-comment').append(out);
+					}
+
+				}
+			})
+		}
+		
+	});
+
+
+	$(document).on('click', '#comment .comment-list .text-left .del', function() {
+
+		var id = $(this).data("id");
+
+		alert(id);
+
+		$.post({
+			url : "http://localhost/shop/delReview",
+			data : {
+				id : id
+			},
+			success: function(data) {
+
+			}
+		})
+	});
+
+	$("#statistic .more-reviews").click(function(e){
+		e.preventDefault();
+		$.ajax({
+			url : "http://localhost/shop/allReviews",
+			method : "POST",
+
+			success: function(data) {
+				var data = $.parseJSON(data);
+				var btn = "";
+				btn += "<div class='col-lg-12'>";
+				btn += "<a class='back' href='http://localhost/shop/admin'>Назад <i class='fa fa-arrow-left' aria-hidden='true'></i></a>";
+				btn += "</div>";
+
+				if (data.status === "ok") {
+					$('#page-wrapper .item-stat').empty();
+
+					var out = '';
+					for(val in data.all){
+						var revies = data.all[val];
+						out+= "<section class='comment-list'>";
+						out+= "<article class='row'>";
+						out+= " <div class='col-md-12 col-sm-9'>";
+						out+= " <div class='col-md-12 col-sm-9'>";
+						out+= "<div class='panel panel-default arrow left'>";
+						out+= "<div class='panel-heading right'>";
+						out+= "<header class='text-left'>";
+						out+= "#id " + revies.id +  "";
+						out+= "<div class='pull-right'>";
+						out+= "<i class='fa fa-trash-o fa-1x del' aria-hidden='true'></i>";
+						out+= "</div>";
+						out+= "<div class='comment-user'><i class='fa fa-user'></i> " + revies.author + "</div>";
+						out+= "<time class='comment-date' datetime='16-12-2014 01:05'><i class='fa fa-clock-o'></i> " + revies.data + "</time>";
+						out+= "</header>";
+						out+= "</div>";
+						out+= "<div class='panel-body'>";
+						out+= "<div class='comment-post'>";
+						out+= "<p>";
+						out+= " " + revies.text;
+						out+= "</p>";
+						out+= "</div>";
+						out+= "</div>";
+						out+= "</div>";
+						out+= "</div>";
+						out+= "</div>";
+						out+= "</article>";
+						out+= "</section>";
+					}
+
+					$('#statistic .item-stat').append(btn);
+					$('#page-wrapper .item-stat').append(out);
+				} else {
+					var err = '<h2 class="error-h">Ничего не найдено ... </h2>';
+					$('#page-wrapper .item-stat').empty();
+					$('#page-wrapper .item-stat').append(err);
+				}
+			}
+		})
+
+	});
 });
